@@ -1,4 +1,4 @@
-<!index.html>
+<!DOCTYPE html>
 <html lang="sq">
 <head>
     <meta charset="UTF-8">
@@ -1046,6 +1046,50 @@
             border-left: 4px solid var(--accent-green);
         }
         
+
+        .verified-badge {
+            background-color: var(--accent-green);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            margin-left: 5px;
+            display: inline-block;
+            white-space: nowrap;
+        }
+        .unverified-badge {
+            background-color: #95a5a6;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            margin-left: 5px;
+            display: inline-block;
+            white-space: nowrap;
+        }
+        .recommended-school-card.unverified { border-left-style: dashed; }
+        .points-box {
+            background-color: var(--light-blue);
+            border-radius: 10px;
+            padding: 18px;
+            margin: 20px 0;
+        }
+        .points-box h3 { font-size: 1.05rem; margin-bottom: 12px; color: var(--dark-blue); }
+        .points-box select { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccd; }
+        .grade-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .points-table td { padding: 8px 10px; }
+        .points-table .total-row { background-color: #fff; font-size: 1.05rem; }
+        .conditions-list { list-style: none; margin: 12px 0; padding: 0; }
+        .conditions-list li { margin: 6px 0; }
+        .cond-ok { color: var(--accent-green); }
+        .cond-fail { color: var(--accent-red); }
+        .cond-unknown { color: var(--accent-orange); }
+
         .recommended-school-card.warning {
             border-left-color: var(--accent-red);
             opacity: 0.9;
@@ -1088,9 +1132,9 @@
                 PLATFORMA E ORIENTIMIT NË KARRIERË
                 <span>🎯</span>
             </h1>
-            <p class="subtitle">Platformë zyrtare e orientimit për nxënësit e klasës së 9-të</p>
+            <p class="subtitle">Platformë orientuese për nxënësit e klasës së 9-të</p>
             <p style="font-size: 0.9rem; margin-top: 10px; opacity: 0.9;">
-                <i class="fas fa-check-circle"></i> Të dhënat e bazuara në regjistrin e MASHTI-t 2024 (të verifikuara) 
+                <i class="fas fa-info-circle"></i> Kriteret e pranimit sipas konkurseve zyrtare të DKA-ve (2024/25 – 2025/26)
                 <span class="private-badge">Përfshin shkolla publike dhe private</span>
             </p>
         </div>
@@ -1145,9 +1189,9 @@
                 <div class="author-info">
                     <p>Testi i krijuar nga: <strong>Naser A. Guri - Këshilltar për Karrierë</strong></p>
                     <p style="margin-top: 5px; font-size: 0.9rem;">
-                        <span class="mashti-badge">MASHTI 2024</span> 
+                        <span class="mashti-badge">Kriteret 2025/26</span> 
                         <span class="private-badge">Përfshin shkolla private</span>
-                        Të dhënat e shkollave janë të verifikuara
+                        Shkollat me shenjën ✔ janë të verifikuara nga burime zyrtare
                     </p>
                 </div>
             </section>
@@ -1225,7 +1269,7 @@
                             <i class="fas fa-school"></i> Shkollat e Mesme
                         </button>
                         <button class="admin-tab" data-admin-tab="statistics">
-                            <i class="fas fa-chart-bar"></i> Statistikat MASHTI
+                            <i class="fas fa-chart-bar"></i> Statistikat e databazës
                         </button>
                         <button class="admin-tab" data-admin-tab="clicks">
                             <i class="fas fa-mouse-pointer"></i> Gjurmimi i Klikimeve
@@ -1236,9 +1280,9 @@
                     </div>
                     
                     <div id="adminSchoolsSection" class="admin-section active">
-                        <h3><i class="fas fa-edit"></i> Menaxhimi i Shkollave të Mesme - MASHTI</h3>
+                        <h3><i class="fas fa-edit"></i> Menaxhimi i Shkollave të Mesme</h3>
                         <p style="color: var(--text-light); margin-bottom: 20px;">
-                            <i class="fas fa-info-circle"></i> Të dhënat janë nga regjistri zyrtar i MASHTI-t 2024 (të verifikuara) - Përfshin shkolla publike dhe private
+                            <i class="fas fa-info-circle"></i> Shkollat e shënuara "E verifikuar" janë konfirmuar nga konkurset e DKA-ve ose burime publike. Kur verifikoni një shkollë, ndryshojeni statusin këtu.
                         </p>
                         
                         <div class="add-school-form" id="addSchoolForm" style="display: none;">
@@ -1252,6 +1296,7 @@
                                 <option value="teknike">Shkollë Teknike</option>
                                 <option value="ekonomike">Shkollë Ekonomike</option>
                                 <option value="mjekesi">Shkollë Mjekësie</option>
+                                <option value="bujqesi">Shkollë Bujqësore / Veterinare</option>
                                 <option value="art">Shkollë e Arteve</option>
                                 <option value="muzik">Shkollë e Muzikës</option>
                                 <option value="gjimnaz-privat">Gjimnaz Privat</option>
@@ -1262,8 +1307,9 @@
                                 <option value="private">Private</option>
                             </select>
                             <input type="text" id="newSchoolPrograms" placeholder="Programet (ndaj me presje)">
-                            <input type="number" id="newSchoolMinGrade" step="0.1" min="1" max="5" placeholder="Nota minimale">
-                            <input type="number" id="newSchoolCapacity" placeholder="Kapaciteti">
+                            <input type="number" id="newSchoolQuota" min="0" placeholder="Kuota e shpallur në konkurs (opsionale)">
+                            <input type="text" id="newSchoolSource" placeholder="Burimi (p.sh. Konkursi i DKA-së 2025/26)">
+                            <label style="display:block; margin: 8px 0;"><input type="checkbox" id="newSchoolVerified"> E verifikuar nga burim zyrtar</label>
                             <textarea id="newSchoolDescription" placeholder="Përshkrimi"></textarea>
                             <button class="save-btn" onclick="addNewSchool()">Ruaj Shkollën</button>
                             <button class="cancel-btn" onclick="toggleAddSchoolForm()">Anulo</button>
@@ -1283,6 +1329,7 @@
                                 <option value="teknike">Shkollë Teknike</option>
                                 <option value="ekonomike">Shkollë Ekonomike</option>
                                 <option value="mjekesi">Shkollë Mjekësie</option>
+                                <option value="bujqesi">Shkollë Bujqësore / Veterinare</option>
                                 <option value="art">Shkollë e Arteve</option>
                                 <option value="muzik">Shkollë e Muzikës</option>
                                 <option value="gjimnaz-privat">Gjimnaz Privat</option>
@@ -1336,7 +1383,7 @@
                         <div class="change-password-section">
                             <h4>Verifikimi i të Dhënave</h4>
                             <button class="save-btn" onclick="verifyData()">
-                                <i class="fas fa-check-circle"></i> Verifiko të Dhënat nga MASHTI
+                                <i class="fas fa-check-circle"></i> Kontrollo cilësinë e të dhënave
                             </button>
                             <div id="verificationResult" style="margin-top: 10px; padding: 10px; border-radius: 5px;"></div>
                         </div>
@@ -1353,8 +1400,8 @@
         </div>
 
         <footer class="footer">
-            <p>© 2024 Platforma e ORIENTIMIT | Të dhënat e verifikuara nga MASHTI | Naser A. Guri - Këshilltar për Karrierë</p>
-            <p style="margin-top: 5px; font-size: 0.8rem;">Versioni 2.0 - Përfshin të gjitha SHML-të publike dhe private të Kosovës</p>
+            <p>© 2024–2026 Platforma e ORIENTIMIT | Naser A. Guri - Këshilltar për Karrierë</p>
+            <p style="margin-top: 5px; font-size: 0.8rem;">Versioni 3.0 – Kriteret e pranimit sipas konkurseve të DKA-ve; të dhënat e shkollave të përditësuara në shtator 2026</p>
         </footer>
     </div>
 
@@ -1457,31 +1504,41 @@
         loadClickStatistics();
 
         // ============================================
-        // BAZA E PLOTË E TË DHËNAVE NGA MASHTI 2024 (E VERIFIKUAR)
-        // PËRFSHIN TË GJITHA SHKOLLAT PUBLIKE DHE PRIVATE TË KOSOVËS
+        // BAZA E TË DHËNAVE PËR SHKOLLAT E MESME TË LARTA (SHML)
+        // Burimet: konkurset zyrtare të DKA-ve për regjistrimin në klasën X,
+        // faqet e komunave dhe burime publike. Çdo shkollë ka fushën
+        // "verified": true = e konfirmuar nga burim zyrtar/publik (shih "source"),
+        // false = e trashëguar nga versioni i vjetër, duhet verifikuar me DKA-në.
+        // Përditësuar: shtator 2026
         // ============================================
-        
+
+        const DATA_LAST_UPDATED = 'Shtator 2026';
+
         const KOSOVO_MUNICIPALITIES = [
             { id: 'decan', name: 'Deçan' },
             { id: 'dragash', name: 'Dragash' },
-            { id: 'drenas', name: 'Drenas' },
+            { id: 'drenas', name: 'Drenas (Gllogoc)' },
             { id: 'ferizaj', name: 'Ferizaj' },
             { id: 'fushe-kosove', name: 'Fushë Kosovë' },
             { id: 'gjakove', name: 'Gjakovë' },
             { id: 'gjilan', name: 'Gjilan' },
-            { id: 'gllogoc', name: 'Gllogoc' },
+            { id: 'gracanice', name: 'Graçanicë' },
             { id: 'han-i-elezit', name: 'Hani i Elezit' },
             { id: 'istog', name: 'Istog' },
+            { id: 'junik', name: 'Junik' },
             { id: 'kacanik', name: 'Kaçanik' },
             { id: 'kamenice', name: 'Kamenicë' },
             { id: 'kline', name: 'Klinë' },
+            { id: 'kllokot', name: 'Kllokot' },
+            { id: 'leposaviq', name: 'Leposaviq' },
             { id: 'lipjan', name: 'Lipjan' },
             { id: 'malisheve', name: 'Malishevë' },
             { id: 'mamusha', name: 'Mamushë' },
-            { id: 'mitrovice', name: 'Mitrovicë' },
-            { id: 'mitrovice-veri', name: 'Mitrovicë Veri' },
+            { id: 'mitrovice', name: 'Mitrovicë e Jugut' },
+            { id: 'mitrovice-veri', name: 'Mitrovicë e Veriut' },
             { id: 'novoberde', name: 'Novobërdë' },
             { id: 'obiliq', name: 'Obiliq' },
+            { id: 'partesh', name: 'Partesh' },
             { id: 'peje', name: 'Pejë' },
             { id: 'podujeve', name: 'Podujevë' },
             { id: 'prishtine', name: 'Prishtinë' },
@@ -1489,1672 +1546,424 @@
             { id: 'rahovec', name: 'Rahovec' },
             { id: 'ranillug', name: 'Ranillug' },
             { id: 'shtime', name: 'Shtime' },
-            { id: 'shtterpce', name: 'Shtërpcë' },
+            { id: 'shterpce', name: 'Shtërpcë' },
             { id: 'skenderaj', name: 'Skënderaj' },
             { id: 'suhareke', name: 'Suharekë' },
             { id: 'viti', name: 'Viti' },
             { id: 'vushtrri', name: 'Vushtrri' },
             { id: 'zubin-potok', name: 'Zubin Potok' },
             { id: 'zvecan', name: 'Zveçan' }
-        ];
+        ]; // 38 komuna
 
-        // Lista e komunave që kanë shkolla të specializuara
-        const MUNICIPALITIES_WITH_ART_SCHOOLS = ['prishtine', 'prizren', 'peje', 'gjilan'];
-        const MUNICIPALITIES_WITH_MUSIC_SCHOOLS = ['prishtine', 'gjilan', 'prizren'];
-        const MUNICIPALITIES_WITH_MEDICAL_SCHOOLS = ['prishtine', 'prizren', 'ferizaj', 'gjilan', 'peje', 'mitrovice', 'gjakove'];
-        const MUNICIPALITIES_WITH_ECONOMIC_SCHOOLS = ['prishtine', 'ferizaj', 'peje', 'podujeve', 'vushtrri', 'kacanik', 'lipjan', 'gjilan', 'prizren'];
-        const MUNICIPALITIES_WITH_TECHNICAL_SCHOOLS = ['prishtine', 'prizren', 'ferizaj', 'gjilan', 'peje', 'mitrovice', 'gjakove', 'kacanik', 'podujeve', 'vushtrri', 'fushe-kosove', 'malisheve', 'shtime', 'kamenice'];
+        // Burimet e përdorura
+        const SOURCES = {
+            prishtina2425: 'DKA Prishtinë – Konkursi për regjistrimin në klasën X, viti shkollor 2024/25',
+            prizren2526: 'DKA Prizren – Konkursi (plotësues) për regjistrimin në klasën X, 2025/26',
+            kacanik: 'Komuna e Kaçanikut – dokument zyrtar i Drejtorisë së Arsimit',
+            ferizaj: 'Raporte publike (KALLXO 2015, Kosovarja 2024, KEDS Academy)',
+            gjilan: 'Universiteti "Kadri Zeka" dhe burime publike',
+            peje: 'Wikipedia (Arsimi në Pejë) dhe faqja e gjimnazit',
+            gjakove: 'Faqet zyrtare të shkollave',
+            mitrovice: 'Bota Sot dhe burime publike',
+            viti: 'KEDS Academy / KQZ',
+            kqz: 'Lista e qendrave të votimit të KQZ-së',
+            osce: 'Raport i OSBE-së për arsimin në Kosovë'
+        };
 
-        // BAZA E PLOTË E TË DHËNAVE - TË GJITHA SHML-të PUBLIKE DHE PRIVATE
+        // Rregullat zyrtare të pranimit (sipas konkurseve të DKA-ve 2024/25 dhe 2025/26)
+        const ADMISSION_RULES = {
+            // lëndët prioritare nga suksesi (kl. 6–9) sipas grupit
+            prioritySubjects: {
+                natyror:    ['Fizikë', 'Kimi', 'Biologji', 'Matematikë'],
+                shoqeror:   ['Gjuhë amtare', 'Gjuhë angleze', 'Histori', 'Gjeografi'],
+                shendetesi: ['Biologji', 'Kimi', 'Fizikë', 'Gjuhë amtare'],
+                teknike:    ['Matematikë', 'TIK', 'Fizikë', 'Gjuhë amtare'],
+                ekonomike:  ['Matematikë', 'Gjuhë amtare', 'Gjuhë angleze', 'Gjeografi'],
+                artistike:  ['Gjuhë amtare', 'Edukatë qytetare', 'Art', 'Muzikë']
+            },
+            // pesha e fushave të testit (gjithsej 40 pikë) sipas grupit
+            testWeights: {
+                natyror:    { natyrore: 20, matematike: 10, gjuhe: 7.5, shoqerore: 2.5 },
+                shoqeror:   { shoqerore: 15, gjuhe: 15, matematike: 7.5, natyrore: 2.5 },
+                shendetesi: { natyrore: 20, gjuhe: 10, matematike: 7.5, shoqerore: 2.5 },
+                teknike:    { matematike: 20, gjuhe: 10, natyrore: 7.5, shoqerore: 2.5 },
+                ekonomike:  { matematike: 20, gjuhe: 10, shoqerore: 7.5, natyrore: 2.5 },
+                artistike:  { gjuhe: 20, shoqerore: 10, matematike: 7.5, natyrore: 2.5 }
+            },
+            // grupet ku kërkohet mesatarja ≥ 4.00 në lëndët prioritare dhe ≥ 40% në test
+            strictGroups: ['natyror', 'shoqeror', 'shendetesi']
+        };
+
+        // Krijon një rekord shkolle me vlera të paracaktuara
+        function S(o) {
+            return Object.assign({
+                status: 'publike',
+                programs: [],
+                streams: [],
+                quota: null,
+                quotaYear: null,
+                verified: false,
+                source: '',
+                note: '',
+                description: '',
+                residentOnly: false
+            }, o);
+        }
+
+        const P25 = { verified: true, source: SOURCES.prishtina2425, quotaYear: '2024/25', residentOnly: true };
+        const PZ = { verified: true, source: SOURCES.prizren2526 };
+        const UNVERIFIED_NOTE = 'Kjo shkollë nuk është konfirmuar ende nga një burim zyrtar. Verifikoni emrin dhe profilet me DKA-në e komunës.';
+
         let KOSOVO_HIGH_SCHOOLS_DATABASE = {
-            // ============ PRISHTINË ============
+            // ============ PRISHTINË (konkursi i DKA-së 2024/25) ============
             'prishtine': {
                 'gjimnaz': [
-                    {
-                        id: 'pr_gj_001',
-                        name: 'SHML "Sami Frashëri"',
-                        municipality: 'Prishtinë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnazi më i vjetër dhe më i madh në Kosovë. Traditë e gjatë në arsim.',
-                        minGrade: 4.3,
-                        capacity: 240,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore', 'Gjuhët e Huaja', 'Informatikë'],
-                        score: 97,
-                        address: 'Rr. "Sami Frashëri", Prishtinë',
-                        phone: '038 123 456'
-                    },
-                    {
-                        id: 'pr_gj_002',
-                        name: 'SHML "Xhevdet Doda"',
-                        municipality: 'Prishtinë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me theks në shkencat ekzakte dhe matematikë.',
-                        minGrade: 4.0,
-                        capacity: 200,
-                        programs: ['Matematikë-Informatikë', 'Fizikë', 'Kimi'],
-                        score: 95,
-                        address: 'Rr. "Xhevdet Doda", Prishtinë'
-                    },
-                    {
-                        id: 'pr_gj_003',
-                        name: 'Gjimnazi i Specializuar Matematikor',
-                        municipality: 'Prishtinë',
-                        type: 'Gjimnaz i specializuar',
-                        status: 'publike',
-                        description: 'Gjimnaz i specializuar për matematikë dhe informatikë. Rezultate të larta në gara ndërkombëtare.',
-                        minGrade: 4.5,
-                        capacity: 120,
-                        programs: ['Matematikë', 'Informatikë', 'Fizikë'],
-                        score: 98,
-                        address: 'Rr. "Eqrem Çabej", Prishtinë'
-                    },
-                    {
-                        id: 'pr_gj_004',
-                        name: 'SHML "Gjin Gazulli"',
-                        municipality: 'Prishtinë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me orientim natyror dhe programe cilësore.',
-                        minGrade: 4.1,
-                        capacity: 210,
-                        programs: ['Shkenca Natyrore', 'Matematikë-Informatikë'],
-                        score: 95,
-                        address: 'Rr. "Gjin Gazulli", Prishtinë'
-                    },
-                    {
-                        id: 'pr_gj_005',
-                        name: 'SHML "Eqrem Çabej"',
-                        municipality: 'Prishtinë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë në mësimin e gjuhëve të huaja.',
-                        minGrade: 4.0,
-                        capacity: 200,
-                        programs: ['Gjuhët e Huaja', 'Shkenca Shoqërore'],
-                        score: 94,
-                        address: 'Rr. "Eqrem Çabej", Prishtinë'
-                    },
-                    {
-                        id: 'pr_gj_006',
-                        name: 'SHML "7 Shtatori"',
-                        municipality: 'Prishtinë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me programe të ndryshme dhe rezultate të mira.',
-                        minGrade: 4.0,
-                        capacity: 200,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore', 'Gjuhët e Huaja'],
-                        score: 95,
-                        address: 'Rr. "7 Shtatori", Prishtinë'
-                    },
-                    {
-                        id: 'pr_gj_007',
-                        name: 'SHML "28 Nëntori"',
-                        municipality: 'Prishtinë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me fokus në shkencat shoqërore dhe gjuhë.',
-                        minGrade: 3.8,
-                        capacity: 180,
-                        programs: ['Shkenca Shoqërore', 'Gjuhët e Huaja'],
-                        score: 92,
-                        address: 'Rr. "28 Nëntori", Prishtinë'
-                    },
-                    {
-                        id: 'pr_gj_008',
-                        name: 'SHML "Ahmet Gashi"',
-                        municipality: 'Prishtinë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë dhe cilësi të lartë.',
-                        minGrade: 3.9,
-                        capacity: 190,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 93,
-                        address: 'Rr. "Ahmet Gashi", Prishtinë'
-                    },
-                    {
-                        id: 'pr_gj_009',
-                        name: 'SHML "Dr. Ali Sokoli"',
-                        municipality: 'Prishtinë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me programe cilësore në shkenca dhe gjuhë.',
-                        minGrade: 3.8,
-                        capacity: 180,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 91,
-                        address: 'Rr. "Dr. Ali Sokoli", Prishtinë'
-                    }
-                ],
-                'gjimnaz-privat': [
-                    {
-                        id: 'pr_gj_priv_001',
-                        name: 'Kolegji "Mehmet Akif"',
-                        municipality: 'Prishtinë',
-                        type: 'Gjimnaz Privat',
-                        status: 'private',
-                        description: 'Kolegj privat me programe të avancuara dhe standarde ndërkombëtare.',
-                        minGrade: 3.5,
-                        capacity: 150,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore', 'Gjuhët e Huaja', 'IT'],
-                        score: 94,
-                        address: 'Rr. "Mehmet Akif", Prishtinë',
-                        phone: '038 789 012',
-                        website: 'www.makif.edu',
-                        tuition: 'Paguhet'
-                    },
-                    {
-                        id: 'pr_gj_priv_002',
-                        name: 'Kolegji "AAB" - Gjimnazi',
-                        municipality: 'Prishtinë',
-                        type: 'Gjimnaz Privat',
-                        status: 'private',
-                        description: 'Gjimnaz privat pjesë e Kolegjit AAB me programe cilësore.',
-                        minGrade: 3.2,
-                        capacity: 120,
-                        programs: ['Shkenca Shoqërore', 'Gjuhët e Huaja', 'Komunikim'],
-                        score: 90,
-                        address: 'Rr. "AAB", Prishtinë',
-                        tuition: 'Paguhet'
-                    },
-                    {
-                        id: 'pr_gj_priv_003',
-                        name: 'Shkolla Ndërkombëtare e Prishtinës',
-                        municipality: 'Prishtinë',
-                        type: 'Gjimnaz Privat',
-                        status: 'private',
-                        description: 'Shkollë ndërkombëtare me programe në gjuhën angleze.',
-                        minGrade: 3.8,
-                        capacity: 100,
-                        programs: ['IB Program', 'Gjuhë Angleze', 'Shkenca'],
-                        score: 96,
-                        address: 'Rr. "Bill Clinton", Prishtinë',
-                        tuition: 'Paguhet'
-                    }
-                ],
-                'kolegj-privat': [
-                    {
-                        id: 'pr_kol_priv_001',
-                        name: 'Kolegji "UBT" - Gjimnazi',
-                        municipality: 'Prishtinë',
-                        type: 'Kolegj Privat',
-                        status: 'private',
-                        description: 'Kolegj privat me programe të integruara dhe laboratorë moderne.',
-                        minGrade: 3.2,
-                        capacity: 150,
-                        programs: ['IT', 'Biznes', 'Gjuhë të Huaja'],
-                        score: 92,
-                        address: 'Rr. "UBT", Prishtinë',
-                        tuition: 'Paguhet'
-                    },
-                    {
-                        id: 'pr_kol_priv_002',
-                        name: 'Kolegji "Iliria"',
-                        municipality: 'Prishtinë',
-                        type: 'Kolegj Privat',
-                        status: 'private',
-                        description: 'Kolegj privat me programe cilësore në gjuhë dhe shkenca shoqërore.',
-                        minGrade: 3.0,
-                        capacity: 120,
-                        programs: ['Gjuhë të Huaja', 'Biznes', 'Psikologji'],
-                        score: 89,
-                        address: 'Rr. "Iliria", Prishtinë',
-                        tuition: 'Paguhet'
-                    },
-                    {
-                        id: 'pr_kol_priv_003',
-                        name: 'Kolegji "PIS"',
-                        municipality: 'Prishtinë',
-                        type: 'Kolegj Privat',
-                        status: 'private',
-                        description: 'Kolegj privat me programe ndërkombëtare.',
-                        minGrade: 3.0,
-                        capacity: 100,
-                        programs: ['IT', 'Biznes', 'Gjuhë'],
-                        score: 88,
-                        address: 'Rr. "PIS", Prishtinë',
-                        tuition: 'Paguhet'
-                    }
+                    S({ ...P25, id: 'pr_gj_001', name: 'Gjimnazi "Sami Frashëri"', type: 'Gjimnaz', streams: ['natyror'],
+                        programs: ['Gjimnaz i shkencave natyrore', 'Paralele në gjuhën turke'], quota: 308,
+                        description: 'Gjimnaz i shkencave natyrore (10 paralele në shqip + 1 në gjuhën turke).' }),
+                    S({ ...P25, id: 'pr_gj_002', name: 'Gjimnazi "Ahmet Gashi"', type: 'Gjimnaz', streams: ['shoqeror'],
+                        programs: ['Gjimnaz i shkencave shoqërore dhe gjuhësore'], quota: 280,
+                        description: 'Gjimnaz i shkencave shoqërore dhe gjuhësore.' }),
+                    S({ ...P25, id: 'pr_gj_003', name: 'Gjimnazi Matematik i Specializuar', type: 'Gjimnaz i specializuar', streams: ['matematikor'],
+                        programs: ['Gjimnaz i shkencave matematikore'], quota: 50, residentOnly: false,
+                        description: 'Pranon nxënës të shkëlqyeshëm nga të gjitha komunat e Kosovës. Pranimi bëhet me provim pranues (40 pikë), suksesin kl. 6–9 (20), notat në matematikë (20) dhe testin në matematikë (20).' }),
+                    S({ ...P25, id: 'pr_gj_004', name: 'Gjimnazi "Xhevdet Doda"', type: 'Gjimnaz', streams: ['natyror'],
+                        programs: ['Gjimnaz i shkencave natyrore'], quota: 308,
+                        description: 'Gjimnaz i shkencave natyrore.' }),
+                    S({ ...P25, id: 'pr_gj_005', name: 'Gjimnazi "Eqrem Çabej"', type: 'Gjimnaz', streams: ['shoqeror'],
+                        programs: ['Gjimnaz i shkencave shoqërore dhe gjuhësore'], quota: 168,
+                        description: 'Gjimnaz i shkencave shoqërore dhe gjuhësore (ish-gjimnaz filologjik).' }),
+                    S({ ...P25, id: 'pr_gj_006', name: 'Medreseja "Alauddin"', type: 'Gjimnaz (medrese)', streams: ['shoqeror'],
+                        programs: ['Gjimnaz i shkencave shoqërore dhe gjuhësore'], quota: 140,
+                        description: 'Medrese e Bashkësisë Islame që pranon përmes konkursit të DKA-së; paralele të ndara për djem (84) dhe vajza (56).' })
                 ],
                 'teknike': [
-                    {
-                        id: 'pr_tek_001',
-                        name: 'SHML "Arkitekt Sinani"',
-                        municipality: 'Prishtinë',
-                        type: 'Shkollë Teknike',
-                        status: 'publike',
-                        description: 'Drejtimi i arkitekturës dhe ndërtimtarisë. Programe praktike dhe teorike.',
-                        minGrade: 2.8,
-                        capacity: 150,
-                        programs: ['Arkitekturë', 'Ndërtimtari', 'Dizajn'],
-                        score: 90,
-                        address: 'Rr. "Arkitekt Sinani", Prishtinë'
-                    },
-                    {
-                        id: 'pr_tek_002',
-                        name: 'SHML "Shtjefën Gjeçovi" - Teknike',
-                        municipality: 'Prishtinë',
-                        type: 'Shkollë Teknike',
-                        status: 'publike',
-                        description: 'Shkollë teknike me profile të ndryshme.',
-                        minGrade: 2.6,
-                        capacity: 180,
-                        programs: ['Elektroteknikë', 'Makineri', 'Ndërtimtari'],
-                        score: 87,
-                        address: 'Rr. "Shtjefën Gjeçovi", Prishtinë'
-                    },
-                    {
-                        id: 'pr_tek_003',
-                        name: 'Qendra e Kompetencës - Teknike',
-                        municipality: 'Prishtinë',
-                        type: 'Shkollë Teknike',
-                        status: 'publike',
-                        description: 'Qendër e kompetencës për profile teknike me pajisje moderne.',
-                        minGrade: 3.0,
-                        capacity: 200,
-                        programs: ['Elektroteknikë', 'Mekatronikë', 'TI', 'Robotikë'],
-                        score: 93,
-                        address: 'Rr. "Qendra e Kompetencës", Prishtinë'
-                    }
+                    S({ ...P25, id: 'pr_tek_001', name: 'SHMT "28 Nëntori"', type: 'Shkollë Teknike',
+                        programs: ['Ndërtimtari', 'Murator', 'Arkitekturë', 'Gjeodezi', 'PTT', 'Grafikë e shtypit', 'Grafikë me libërlidhje', 'Grafikë e mediave'], quota: 260,
+                        description: 'Shkollë e mesme teknike: ndërtimtari, arkitekturë, gjeodezi dhe grafikë.' }),
+                    S({ ...P25, id: 'pr_tek_002', name: 'SHME "Gjin Gazulli"', type: 'Shkollë Elektroteknike',
+                        programs: ['Teknik i informatikës së biznesit', 'Teknik për dizajnimin e mediave interaktive', 'Zhvillues i aplikacioneve softuerike', 'Teknik i sistemeve të TIK', 'Teknik i elektronikës', 'Telekomunikacion', 'Teknik i energjetikës', 'Instalues elektrik'], quota: 264,
+                        description: 'Shkollë e mesme elektroteknike me profile të TIK-ut, elektronikës dhe energjetikës.' })
                 ],
                 'ekonomike': [
-                    {
-                        id: 'pr_eko_001',
-                        name: 'SHML "Hoxhë Kadri Prishtina" - Ekonomike',
-                        municipality: 'Prishtinë',
-                        type: 'Shkollë Ekonomike',
-                        status: 'publike',
-                        description: 'Shkollë ekonomike me programe cilësore në biznes dhe menaxhment.',
-                        minGrade: 3.6,
-                        capacity: 200,
-                        programs: ['Bankë dhe Financa', 'Kontabilitet', 'Menaxhment', 'Marketing'],
-                        score: 92,
-                        address: 'Rr. "Hoxhë Kadri Prishtina", Prishtinë'
-                    },
-                    {
-                        id: 'pr_eko_002',
-                        name: 'Shkolla Ekonomike "Sami Frashëri"',
-                        municipality: 'Prishtinë',
-                        type: 'Shkollë Ekonomike',
-                        status: 'publike',
-                        description: 'Shkollë ekonomike me traditë.',
-                        minGrade: 3.4,
-                        capacity: 180,
-                        programs: ['Ekonomi', 'Kontabilitet', 'Biznes'],
-                        score: 89,
-                        address: 'Rr. "Sami Frashëri", Prishtinë'
-                    }
+                    S({ ...P25, id: 'pr_eko_001', name: 'SHMEJ "Hoxhë Kadri Prishtina"', type: 'Shkollë Ekonomike-Juridike',
+                        programs: ['Kontabilitet dhe tatime', 'Banka, financa dhe sigurime', 'Marketing dhe shitje', 'Shpedicion dhe logjistikë', 'Juridik, administratë dhe shërbime të zyrës'], quota: 312,
+                        description: 'Shkollë e mesme ekonomike-juridike.' }),
+                    S({ ...P25, id: 'pr_eko_002', name: 'SHMHT "7 Shtatori"', type: 'Shkollë Hoteleri-Turizëm',
+                        programs: ['Tregtar me shumicë dhe pakicë', 'Kuzhinier', 'Asistent i mikpritjes hoteliere', 'Asistent i turizmit dhe udhëtimeve'], quota: 208,
+                        description: 'Shkollë e mesme e hotelierisë, turizmit dhe tregtisë.' })
                 ],
                 'mjekesi': [
-                    {
-                        id: 'pr_mjk_001',
-                        name: 'SHML "Dr. Xheladin Deda"',
-                        municipality: 'Prishtinë',
-                        type: 'Shkollë Mjekësie',
-                        status: 'publike',
-                        description: 'Shkollë e mjekësisë në Prishtinë. Programe praktike në spitale.',
-                        minGrade: 4.0,
-                        capacity: 180,
-                        programs: ['Infermieri', 'Farmaci', 'Laborant Mjekësor'],
-                        score: 94,
-                        address: 'Rr. "Dr. Xheladin Deda", Prishtinë'
-                    },
-                    {
-                        id: 'pr_mjk_002',
-                        name: 'Shkolla e Mesme e Mjekësisë',
-                        municipality: 'Prishtinë',
-                        type: 'Shkollë Mjekësie',
-                        status: 'publike',
-                        description: 'Shkollë mjekësore me profile të ndryshme.',
-                        minGrade: 3.8,
-                        capacity: 150,
-                        programs: ['Infermieri', 'Farmaci'],
-                        score: 91,
-                        address: 'Rr. "Mjekësisë", Prishtinë'
-                    }
+                    S({ ...P25, id: 'pr_mjk_001', name: 'SHMM "Dr. Ali Sokoli"', type: 'Shkollë Mjekësie',
+                        programs: ['Bashkëpunëtor profesional i infermierisë', 'Teknik i fizioterapisë', 'Teknik dentar', 'Teknik i farmacisë', 'Teknik i farmacisë (gjuhë boshnjake)'], quota: 196,
+                        description: 'Shkollë e mesme e mjekësisë.' })
                 ],
-                'art': [
-                    {
-                        id: 'pr_art_001',
-                        name: 'SHML "Odhise Paskali" - Dega e Arteve',
-                        municipality: 'Prishtinë',
-                        type: 'Shkollë e Arteve',
-                        status: 'publike',
-                        description: 'Shkollë e mesme për arte figurative dhe dizajn.',
-                        minGrade: 3.2,
-                        capacity: 80,
-                        programs: ['Pikturë', 'Skulpturë', 'Dizajn Grafik', 'Arkitekturë'],
-                        score: 91,
-                        address: 'Rr. "Odhise Paskali", Prishtinë'
-                    }
+                'bujqesi': [
+                    S({ ...P25, id: 'pr_buj_001', name: 'SHMAT "Abdyl Frashëri"', type: 'Shkollë Bujqësore-Teknologjike',
+                        programs: ['Agrobiznes', 'Hortikulturë', 'Mbrojtje e bimëve', 'Përpunues i ushqimit', 'Asistent i sigurisë ushqimore dhe dietave', 'Veterinari'], quota: 182,
+                        description: 'Shkollë e mesme e bujqësisë, teknologjisë ushqimore dhe veterinarisë.' })
                 ],
                 'muzik': [
-                    {
-                        id: 'pr_muz_001',
-                        name: 'SHML "Prenk Jakova"',
-                        municipality: 'Prishtinë',
-                        type: 'Shkollë e Muzikës',
-                        status: 'publike',
-                        description: 'Shkollë e mesme e muzikës në Prishtinë. Programe për instrumente të ndryshme.',
-                        minGrade: 3.0,
-                        capacity: 60,
-                        programs: ['Piano', 'Violinë', 'Violonçel', 'Kanto', 'Flaut'],
-                        score: 93,
-                        address: 'Rr. "Prenk Jakova", Prishtinë'
-                    }
-                ]
-            },
-            
-            // ============ PRIZREN ============
-            'prizren': {
-                'gjimnaz': [
-                    {
-                        id: 'pz_gj_001',
-                        name: 'SHML "11 Marsi"',
-                        municipality: 'Prizren',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë në Prizren. Programe cilësore.',
-                        minGrade: 4.0,
-                        capacity: 210,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore', 'Gjuhët e Huaja'],
-                        score: 95,
-                        address: 'Rr. "11 Marsi", Prizren'
-                    },
-                    {
-                        id: 'pz_gj_002',
-                        name: 'SHML "Luciano Motroni"',
-                        municipality: 'Prizren',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me programe të pasura dhe traditë.',
-                        minGrade: 3.9,
-                        capacity: 190,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 93,
-                        address: 'Rr. "Luciano Motroni", Prizren'
-                    },
-                    {
-                        id: 'pz_gj_003',
-                        name: 'SHML "Qendra e Kompetencës"',
-                        municipality: 'Prizren',
-                        type: 'Gjimnaz i specializuar',
-                        status: 'publike',
-                        description: 'Qendër e kompetencës me programe të avancuara.',
-                        minGrade: 4.2,
-                        capacity: 150,
-                        programs: ['Shkenca Natyrore', 'Teknologji', 'Inovacion'],
-                        score: 96,
-                        address: 'Rr. "Qendra e Kompetencës", Prizren'
-                    },
-                    {
-                        id: 'pz_gj_004',
-                        name: 'SHML "Ymer Prizreni"',
-                        municipality: 'Prizren',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me programe cilësore.',
-                        minGrade: 3.8,
-                        capacity: 180,
-                        programs: ['Shkenca Shoqërore', 'Gjuhët e Huaja'],
-                        score: 92,
-                        address: 'Rr. "Ymer Prizreni", Prizren'
-                    }
+                    S({ ...P25, id: 'pr_muz_001', name: 'SHMM "Prenk Jakova"', type: 'Shkollë e Muzikës',
+                        programs: ['Instrumental', 'Bashkëpunëtor muzikor'], quota: 50,
+                        description: 'Shkollë e mesme e muzikës. Kërkohet provim pranues; për drejtimin instrumental kërkohet shkolla e ulët e muzikës.' })
                 ],
                 'gjimnaz-privat': [
-                    {
-                        id: 'pz_gj_priv_001',
-                        name: 'Kolegji "Universi"',
-                        municipality: 'Prizren',
-                        type: 'Gjimnaz Privat',
-                        status: 'private',
-                        description: 'Kolegj privat me programe moderne.',
-                        minGrade: 3.2,
-                        capacity: 100,
-                        programs: ['Gjuhë të Huaja', 'IT', 'Biznes'],
-                        score: 89,
-                        address: 'Rr. "Universi", Prizren',
-                        tuition: 'Paguhet'
-                    }
+                    S({ id: 'pr_gj_priv_001', name: 'Kolegji "Mehmet Akif"', type: 'Gjimnaz Privat', status: 'private', verified: true, source: SOURCES.osce,
+                        programs: ['Gjimnaz (sipas kurrikulës së Kosovës)'],
+                        description: 'Institucion arsimor privat në Prishtinë. Kushtet e pranimit dhe pagesa përcaktohen nga vetë shkolla.' }),
+                    S({ id: 'pr_gj_priv_003', name: 'Prishtina International School (PIS)', type: 'Shkollë Private Ndërkombëtare', status: 'private', verified: true, source: SOURCES.osce,
+                        programs: ['Mësim në gjuhën angleze'],
+                        description: 'Shkollë private ndërkombëtare në Prishtinë. Kushtet e pranimit dhe pagesa përcaktohen nga vetë shkolla.' }),
+                    S({ id: 'pr_gj_priv_002', name: 'Kolegji "AAB" – Gjimnazi', type: 'Gjimnaz Privat', status: 'private',
+                        programs: ['Gjimnaz'], note: UNVERIFIED_NOTE })
                 ],
-                'teknike': [
-                    {
-                        id: 'pz_tek_001',
-                        name: 'SHML "Qendra e Kompetencës" - Teknike',
-                        municipality: 'Prizren',
-                        type: 'Shkollë Teknike',
-                        status: 'publike',
-                        description: 'Qendër e kompetencës për profile teknike.',
-                        minGrade: 2.8,
-                        capacity: 200,
-                        programs: ['Elektroteknikë', 'Mekanikë', 'TI'],
-                        score: 90,
-                        address: 'Rr. "Qendra e Kompetencës", Prizren'
-                    }
-                ],
-                'mjekesi': [
-                    {
-                        id: 'pz_mjk_001',
-                        name: 'SHML "Luciano Motroni" - Mjekësi',
-                        municipality: 'Prizren',
-                        type: 'Shkollë Mjekësie',
-                        status: 'publike',
-                        description: 'Shkollë e mjekësisë në Prizren.',
-                        minGrade: 4.0,
-                        capacity: 130,
-                        programs: ['Infermieri', 'Farmaci', 'Stomatologji'],
-                        score: 93,
-                        address: 'Rr. "Luciano Motroni", Prizren'
-                    }
-                ],
-                'art': [
-                    {
-                        id: 'pz_art_001',
-                        name: 'SHML "Qendra e Kompetencës" - Dega e Arteve',
-                        municipality: 'Prizren',
-                        type: 'Shkollë e Arteve',
-                        status: 'publike',
-                        description: 'Drejtimi artistik në Qendrën e Kompetencës.',
-                        minGrade: 3.0,
-                        capacity: 75,
-                        programs: ['Pikturë', 'Dizajn', 'Arkitekturë'],
-                        score: 92,
-                        address: 'Rr. "Qendra e Kompetencës", Prizren'
-                    }
+                'kolegj-privat': [
+                    S({ id: 'pr_kol_priv_001', name: 'Kolegji "UBT" – Gjimnazi', type: 'Kolegj Privat', status: 'private',
+                        programs: ['Gjimnaz'], note: UNVERIFIED_NOTE }),
+                    S({ id: 'pr_kol_priv_002', name: 'Kolegji "Iliria"', type: 'Kolegj Privat', status: 'private',
+                        programs: ['Gjimnaz'], note: UNVERIFIED_NOTE })
                 ]
             },
-            
+
+            // ============ PRIZREN (konkursi i DKA-së 2025/26) ============
+            'prizren': {
+                'gjimnaz': [
+                    S({ ...PZ, id: 'pz_gj_001', name: 'Gjimnazi "Gjon Buzuku"', type: 'Gjimnaz', streams: ['natyror'],
+                        programs: ['Shkencat natyrore (shqip, boshnjakisht, turqisht)', 'Paralele të ndara në Gjonaj dhe Romajë'],
+                        description: 'Gjimnaz i shkencave natyrore; mësim edhe në gjuhën boshnjake dhe turke.' }),
+                    S({ ...PZ, id: 'pz_gj_002', name: 'Gjimnazi "Remzi Ademaj"', type: 'Gjimnaz', streams: ['shoqeror'],
+                        programs: ['Drejtimi shoqëror-gjuhësor', 'Paralele të ndara në Zhur, Velezhë, Zym, Gjonaj, Romajë'],
+                        description: 'Gjimnaz i drejtimit shoqëror-gjuhësor.' })
+                ],
+                'mjekesi': [
+                    S({ ...PZ, id: 'pz_mjk_001', name: 'SHMM "Luciano Motroni"', type: 'Shkollë Mjekësie',
+                        programs: ['Bashkëpunëtor profesional i infermierisë', 'Teknik i farmacisë', 'Teknik dentar', 'Teknik i laborantit mjekësor'],
+                        description: 'Shkollë e mesme e mjekësisë; mësim edhe në gjuhën boshnjake dhe turke.' })
+                ],
+                'ekonomike': [
+                    S({ ...PZ, id: 'pz_eko_001', name: 'IAAP "Ymer Prizreni"', type: 'Shkollë Profesionale (ekonomi, tregti, hoteleri, bujqësi)',
+                        programs: ['Kontabilitet dhe tatime', 'Asistent financiar', 'Banka dhe sigurime', 'Marketing dhe shitje', 'Shpedicion dhe logjistikë', 'Tregti me pakicë dhe shumicë', 'Asistent i mikpritjes hoteliere', 'Kuzhinier', 'Administratë e shërbimeve të zyrës', 'Hortikulturë', 'Agrobiznes', 'Teknologji ushqimore', 'Rrobaqepësi'],
+                        description: 'Institucion i arsimit profesional me shumë profile; mësim edhe në gjuhën boshnjake dhe turke.' })
+                ],
+                'muzik': [
+                    S({ ...PZ, id: 'pz_muz_001', name: 'Shkolla e Muzikës "Lorenc Antoni"', type: 'Shkollë e Muzikës',
+                        programs: ['Bashkëpunëtor i përgjithshëm muzikor', 'Instrumental / Balet'],
+                        description: 'Shkollë e mesme e muzikës. Kërkohet provim pranues.' })
+                ],
+                'teknike': [
+                    S({ id: 'pz_tek_001', name: 'Qendra e Kompetencës – Prizren', type: 'Shkollë Profesionale',
+                        programs: ['Profile teknike'], note: UNVERIFIED_NOTE })
+                ],
+                'gjimnaz-privat': [
+                    S({ id: 'pz_gj_priv_001', name: 'Kolegji "Universi"', type: 'Gjimnaz Privat', status: 'private',
+                        programs: ['Gjimnaz'], note: UNVERIFIED_NOTE })
+                ]
+            },
+
             // ============ FERIZAJ ============
             'ferizaj': {
                 'gjimnaz': [
-                    {
-                        id: 'fer_gj_001',
-                        name: 'SHML "Elena Gjika"',
-                        municipality: 'Ferizaj',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me cilësi në Ferizaj.',
-                        minGrade: 3.8,
-                        capacity: 200,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore', 'Gjuhët e Huaja'],
-                        score: 93,
-                        address: 'Rr. "Elena Gjika", Ferizaj'
-                    },
-                    {
-                        id: 'fer_gj_002',
-                        name: 'SHML "Faik Konica"',
-                        municipality: 'Ferizaj',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë.',
-                        minGrade: 3.9,
-                        capacity: 190,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 92,
-                        address: 'Rr. "Faik Konica", Ferizaj'
-                    },
-                    {
-                        id: 'fer_gj_003',
-                        name: 'SHML "Pjetër Bogdani"',
-                        municipality: 'Ferizaj',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me programe të ndryshme.',
-                        minGrade: 3.7,
-                        capacity: 180,
-                        programs: ['Shkenca Shoqërore', 'Gjuhët e Huaja'],
-                        score: 91,
-                        address: 'Rr. "Pjetër Bogdani", Ferizaj'
-                    },
-                    {
-                        id: 'fer_gj_004',
-                        name: 'SHML "Qendra e Kompetencës"',
-                        municipality: 'Ferizaj',
-                        type: 'Gjimnaz i specializuar',
-                        status: 'publike',
-                        description: 'Qendër e kompetencës me programe të avancuara.',
-                        minGrade: 4.1,
-                        capacity: 160,
-                        programs: ['Shkenca Natyrore', 'Teknologji', 'Informatikë'],
-                        score: 95,
-                        address: 'Rr. "Qendra e Kompetencës", Ferizaj'
-                    }
+                    S({ id: 'fer_gj_001', name: 'Gjimnazi "Shaban Hashani"', type: 'Gjimnaz', verified: true, source: SOURCES.ferizaj,
+                        programs: ['Gjimnaz (drejtimet sipas konkursit të DKA Ferizaj)'] }),
+                    S({ id: 'fer_gj_002', name: 'Gjimnazi "Kuvendi i Arbërit"', type: 'Gjimnaz', verified: true, source: SOURCES.ferizaj, streams: ['natyror'],
+                        programs: ['Gjimnaz shkencor (shkencat natyrore)'] })
                 ],
                 'teknike': [
-                    {
-                        id: 'fer_tek_001',
-                        name: 'SHML "Qendra e Kompetencës" - Teknike',
-                        municipality: 'Ferizaj',
-                        type: 'Shkollë Teknike',
-                        status: 'publike',
-                        description: 'Qendër e kompetencës për profile teknike.',
-                        minGrade: 2.7,
-                        capacity: 180,
-                        programs: ['Elektroteknikë', 'Makineri', 'Ndërtimtari'],
-                        score: 89,
-                        address: 'Rr. "Qendra e Kompetencës", Ferizaj'
-                    }
+                    S({ id: 'fer_tek_001', name: 'SHMT "Pjetër Bogdani"', type: 'Shkollë Teknike', verified: true, source: SOURCES.ferizaj,
+                        programs: ['Elektroteknikë (instalues elektrik)', 'Profile të tjera teknike sipas konkursit'] }),
+                    S({ id: 'fer_tek_002', name: 'Qendra e Kompetencës – Ferizaj', type: 'Shkollë Profesionale',
+                        programs: ['Profile teknike'], note: UNVERIFIED_NOTE })
                 ],
                 'ekonomike': [
-                    {
-                        id: 'fer_eko_001',
-                        name: 'SHML "Zenel Hajdini" - Ekonomike',
-                        municipality: 'Ferizaj',
-                        type: 'Shkollë Ekonomike',
-                        status: 'publike',
-                        description: 'Drejtimet ekonomike.',
-                        minGrade: 3.2,
-                        capacity: 150,
-                        programs: ['Ekonomi', 'Kontabilitet'],
-                        score: 87,
-                        address: 'Rr. "Zenel Hajdini", Ferizaj'
-                    }
+                    S({ id: 'fer_eko_001', name: 'SHME "Faik Konica"', type: 'Shkollë Ekonomike', verified: true, source: SOURCES.ferizaj,
+                        programs: ['Ekonomi (profilet sipas konkursit)'] })
+                ],
+                'bujqesi': [
+                    S({ id: 'fer_buj_001', name: 'IAAP "Zenel Hajdini"', type: 'Shkollë Bujqësore', verified: true, source: SOURCES.ferizaj,
+                        programs: ['Bujqësi (profilet sipas konkursit)'] })
                 ],
                 'mjekesi': [
-                    {
-                        id: 'fer_mjk_001',
-                        name: 'SHML "Elena Gjika" - Mjekësi',
-                        municipality: 'Ferizaj',
-                        type: 'Shkollë Mjekësie',
-                        status: 'publike',
-                        description: 'Shkollë e mjekësisë në Ferizaj.',
-                        minGrade: 4.0,
-                        capacity: 110,
-                        programs: ['Infermieri', 'Laborant Mjekësor'],
-                        score: 92,
-                        address: 'Rr. "Elena Gjika", Ferizaj'
-                    }
+                    S({ id: 'fer_mjk_001', name: 'SHMM "Elena Gjika"', type: 'Shkollë Mjekësie', verified: true, source: SOURCES.ferizaj,
+                        programs: ['Profile shëndetësore (sipas konkursit)'] })
                 ]
             },
-            
-            // ============ GJILAN ============
-            'gjilan': {
-                'gjimnaz': [
-                    {
-                        id: 'gl_gj_001',
-                        name: 'SHML "Marin Barleti"',
-                        municipality: 'Gjilan',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë në Gjilan.',
-                        minGrade: 3.8,
-                        capacity: 190,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore', 'Gjuhët e Huaja'],
-                        score: 93,
-                        address: 'Rr. "Marin Barleti", Gjilan'
-                    },
-                    {
-                        id: 'gl_gj_002',
-                        name: 'SHML "Zenel Hajdini"',
-                        municipality: 'Gjilan',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me programe cilësore.',
-                        minGrade: 3.7,
-                        capacity: 185,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 91,
-                        address: 'Rr. "Zenel Hajdini", Gjilan'
-                    },
-                    {
-                        id: 'gl_gj_003',
-                        name: 'Gjimnazi Natyror Gjilan',
-                        municipality: 'Gjilan',
-                        type: 'Gjimnaz i specializuar',
-                        status: 'publike',
-                        description: 'Gjimnaz me fokus në shkencat natyrore.',
-                        minGrade: 4.0,
-                        capacity: 150,
-                        programs: ['Biologji', 'Kimi', 'Fizikë'],
-                        score: 94,
-                        address: 'Rr. "Natyrore", Gjilan'
-                    }
-                ],
-                'gjimnaz-privat': [
-                    {
-                        id: 'gl_gj_priv_001',
-                        name: 'Kolegji "Dardania"',
-                        municipality: 'Gjilan',
-                        type: 'Gjimnaz Privat',
-                        status: 'private',
-                        description: 'Kolegj privat me programe moderne.',
-                        minGrade: 3.0,
-                        capacity: 100,
-                        programs: ['Gjuhë të Huaja', 'IT', 'Biznes'],
-                        score: 88,
-                        address: 'Rr. "Dardania", Gjilan',
-                        tuition: 'Paguhet'
-                    }
-                ],
-                'teknike': [
-                    {
-                        id: 'gl_tek_001',
-                        name: 'SHML "Mehmet Isai"',
-                        municipality: 'Gjilan',
-                        type: 'Shkollë Teknike',
-                        status: 'publike',
-                        description: 'Shkollë teknike me drejtime të ndryshme.',
-                        minGrade: 2.6,
-                        capacity: 260,
-                        programs: ['Elektroteknikë', 'Makineri', 'Ndërtimtari'],
-                        score: 88,
-                        address: 'Rr. "Mehmet Isai", Gjilan'
-                    }
-                ],
-                'muzik': [
-                    {
-                        id: 'gl_muz_001',
-                        name: 'Shkolla e Muzikës - Gjilan',
-                        municipality: 'Gjilan',
-                        type: 'Shkollë e Muzikës',
-                        status: 'publike',
-                        description: 'Shkollë e mesme e muzikës.',
-                        minGrade: 2.8,
-                        capacity: 80,
-                        programs: ['Piano', 'Violinë', 'Kanto'],
-                        score: 91,
-                        address: 'Rr. "Muzikës", Gjilan'
-                    }
-                ],
-                'mjekesi': [
-                    {
-                        id: 'gl_mjk_001',
-                        name: 'Shkolla e Mesme e Mjekësisë - Gjilan',
-                        municipality: 'Gjilan',
-                        type: 'Shkollë Mjekësie',
-                        status: 'publike',
-                        description: 'Shkollë e mjekësisë në Gjilan.',
-                        minGrade: 4.0,
-                        capacity: 100,
-                        programs: ['Infermieri', 'Laborant Mjekësor'],
-                        score: 92,
-                        address: 'Rr. "Mjekësisë", Gjilan'
-                    }
-                ]
-            },
-            
-            // ============ PEJË ============
-            'peje': {
-                'gjimnaz': [
-                    {
-                        id: 'pe_gj_001',
-                        name: 'SHML "Bedri Pejani"',
-                        municipality: 'Pejë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me rezultate të larta në Pejë.',
-                        minGrade: 4.0,
-                        capacity: 200,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore', 'Gjuhët e Huaja'],
-                        score: 94,
-                        address: 'Rr. "Bedri Pejani", Pejë'
-                    },
-                    {
-                        id: 'pe_gj_002',
-                        name: 'SHML "Ali Hadri"',
-                        municipality: 'Pejë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë.',
-                        minGrade: 3.8,
-                        capacity: 190,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 92,
-                        address: 'Rr. "Ali Hadri", Pejë'
-                    },
-                    {
-                        id: 'pe_gj_003',
-                        name: 'SHML "Odhise Paskali"',
-                        municipality: 'Pejë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me programe të pasura.',
-                        minGrade: 3.7,
-                        capacity: 180,
-                        programs: ['Shkenca Shoqërore', 'Art'],
-                        score: 91,
-                        address: 'Rr. "Odhise Paskali", Pejë'
-                    }
-                ],
-                'teknike': [
-                    {
-                        id: 'pe_tek_001',
-                        name: 'SHML "Shaban Spahija" - Teknike',
-                        municipality: 'Pejë',
-                        type: 'Shkollë Teknike',
-                        status: 'publike',
-                        description: 'Shkollë teknike me drejtime të ndryshme.',
-                        minGrade: 2.6,
-                        capacity: 200,
-                        programs: ['Elektroteknikë', 'Makineri', 'Ndërtimtari'],
-                        score: 87,
-                        address: 'Rr. "Shaban Spahija", Pejë'
-                    }
-                ],
-                'ekonomike': [
-                    {
-                        id: 'pe_eko_001',
-                        name: 'SHML "Ali Hadri" - Ekonomike',
-                        municipality: 'Pejë',
-                        type: 'Shkollë Ekonomike',
-                        status: 'publike',
-                        description: 'Drejtimet ekonomike.',
-                        minGrade: 3.2,
-                        capacity: 130,
-                        programs: ['Ekonomi', 'Kontabilitet'],
-                        score: 86,
-                        address: 'Rr. "Ali Hadri", Pejë'
-                    }
-                ],
-                'art': [
-                    {
-                        id: 'pe_art_001',
-                        name: 'SHML "Odhise Paskali" - Art',
-                        municipality: 'Pejë',
-                        type: 'Shkollë e Arteve',
-                        status: 'publike',
-                        description: 'Drejtimi artistik.',
-                        minGrade: 3.0,
-                        capacity: 70,
-                        programs: ['Pikturë', 'Dizajn'],
-                        score: 91,
-                        address: 'Rr. "Odhise Paskali", Pejë'
-                    }
-                ],
-                'mjekesi': [
-                    {
-                        id: 'pe_mjk_001',
-                        name: 'Shkolla e Mesme e Mjekësisë - Pejë',
-                        municipality: 'Pejë',
-                        type: 'Shkollë Mjekësie',
-                        status: 'publike',
-                        description: 'Shkollë e mjekësisë në Pejë.',
-                        minGrade: 4.0,
-                        capacity: 100,
-                        programs: ['Infermieri', 'Farmaci'],
-                        score: 92,
-                        address: 'Rr. "Mjekësisë", Pejë'
-                    }
-                ]
-            },
-            
-            // ============ MITROVICË ============
-            'mitrovice': {
-                'gjimnaz': [
-                    {
-                        id: 'mit_gj_001',
-                        name: 'SHML "Hasan Prishtina"',
-                        municipality: 'Mitrovicë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë në Mitrovicë.',
-                        minGrade: 3.9,
-                        capacity: 200,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 94,
-                        address: 'Rr. "Hasan Prishtina", Mitrovicë'
-                    },
-                    {
-                        id: 'mit_gj_002',
-                        name: 'SHML "Tefta Tashko"',
-                        municipality: 'Mitrovicë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Shkollë e mesme e lartë me cilësi.',
-                        minGrade: 3.8,
-                        capacity: 190,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore', 'Gjuhët e Huaja'],
-                        score: 93,
-                        address: 'Rr. "Tefta Tashko", Mitrovicë'
-                    }
-                ],
-                'teknike': [
-                    {
-                        id: 'mit_tek_001',
-                        name: 'SHML "Arkitekt Sinani" - Mitrovicë',
-                        municipality: 'Mitrovicë',
-                        type: 'Shkollë Teknike',
-                        status: 'publike',
-                        description: 'Shkollë teknike me drejtime të ndryshme.',
-                        minGrade: 2.6,
-                        capacity: 220,
-                        programs: ['Elektroteknikë', 'Makineri', 'Minerologji', 'Ndërtimtari'],
-                        score: 88,
-                        address: 'Rr. "Arkitekt Sinani", Mitrovicë'
-                    }
-                ],
-                'mjekesi': [
-                    {
-                        id: 'mit_mjk_001',
-                        name: 'SHML "Dr. Xheladin Deda" - Mitrovicë',
-                        municipality: 'Mitrovicë',
-                        type: 'Shkollë Mjekësie',
-                        status: 'publike',
-                        description: 'Shkollë e mjekësisë në Mitrovicë.',
-                        minGrade: 4.0,
-                        capacity: 120,
-                        programs: ['Infermieri', 'Laborant Mjekësor'],
-                        score: 92,
-                        address: 'Rr. "Dr. Xheladin Deda", Mitrovicë'
-                    }
-                ]
-            },
-            
-            // ============ GJAKOVË ============
-            'gjakove': {
-                'gjimnaz': [
-                    {
-                        id: 'gk_gj_001',
-                        name: 'SHML "Hajdar Dushi"',
-                        municipality: 'Gjakovë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë në Gjakovë.',
-                        minGrade: 3.8,
-                        capacity: 180,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 91,
-                        address: 'Rr. "Hajdar Dushi", Gjakovë'
-                    }
-                ],
-                'teknike': [
-                    {
-                        id: 'gk_tek_001',
-                        name: 'SHML "Hajdar Dushi" - Teknike',
-                        municipality: 'Gjakovë',
-                        type: 'Shkollë Teknike',
-                        status: 'publike',
-                        description: 'Shkollë teknike me drejtime të ndryshme.',
-                        minGrade: 2.6,
-                        capacity: 200,
-                        programs: ['Elektroteknikë', 'Makineri', 'Tekstil'],
-                        score: 86,
-                        address: 'Rr. "Hajdar Dushi", Gjakovë'
-                    }
-                ],
-                'mjekesi': [
-                    {
-                        id: 'gk_mjk_001',
-                        name: 'SHML "Hajdar Dushi" - Mjekësi',
-                        municipality: 'Gjakovë',
-                        type: 'Shkollë Mjekësie',
-                        status: 'publike',
-                        description: 'Shkollë e mjekësisë në Gjakovë.',
-                        minGrade: 4.0,
-                        capacity: 90,
-                        programs: ['Infermieri'],
-                        score: 89,
-                        address: 'Rr. "Hajdar Dushi", Gjakovë'
-                    }
-                ]
-            },
-            
-            // ============ PODUJEVË ============
-            'podujeve': {
-                'gjimnaz': [
-                    {
-                        id: 'pod_gj_001',
-                        name: 'SHML "Fan S Noli"',
-                        municipality: 'Podujevë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me rezultate të mira.',
-                        minGrade: 3.8,
-                        capacity: 200,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore', 'Gjuhët e Huaja'],
-                        score: 91,
-                        address: 'Rr. "Fan S Noli", Podujevë'
-                    },
-                    {
-                        id: 'pod_gj_002',
-                        name: 'SHML "Aleksandër Xhuvani"',
-                        municipality: 'Podujevë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë.',
-                        minGrade: 3.7,
-                        capacity: 190,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 90,
-                        address: 'Rr. "Aleksandër Xhuvani", Podujevë'
-                    }
-                ],
-                'teknike': [
-                    {
-                        id: 'pod_tek_001',
-                        name: 'SHML "Fan S Noli" - Teknike',
-                        municipality: 'Podujevë',
-                        type: 'Shkollë Teknike',
-                        status: 'publike',
-                        description: 'Shkollë teknike me drejtime të ndryshme.',
-                        minGrade: 2.5,
-                        capacity: 150,
-                        programs: ['Elektroteknikë', 'Makineri'],
-                        score: 84,
-                        address: 'Rr. "Fan S Noli", Podujevë'
-                    }
-                ],
-                'ekonomike': [
-                    {
-                        id: 'pod_eko_001',
-                        name: 'SHML "Aleksandër Xhuvani" - Ekonomike',
-                        municipality: 'Podujevë',
-                        type: 'Shkollë Ekonomike',
-                        status: 'publike',
-                        description: 'Drejtimet ekonomike.',
-                        minGrade: 3.0,
-                        capacity: 120,
-                        programs: ['Ekonomi', 'Kontabilitet'],
-                        score: 83,
-                        address: 'Rr. "Aleksandër Xhuvani", Podujevë'
-                    }
-                ]
-            },
-            
-            // ============ VUSHTRRI ============
-            'vushtrri': {
-                'gjimnaz': [
-                    {
-                        id: 'vus_gj_001',
-                        name: 'SHML "Bahri Haxha"',
-                        municipality: 'Vushtrri',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë në Vushtrri.',
-                        minGrade: 3.7,
-                        capacity: 180,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 90,
-                        address: 'Rr. "Bahri Haxha", Vushtrri'
-                    },
-                    {
-                        id: 'vus_gj_002',
-                        name: 'SHML "Lutfi Musiqi"',
-                        municipality: 'Vushtrri',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me programe cilësore.',
-                        minGrade: 3.6,
-                        capacity: 170,
-                        programs: ['Shkenca Shoqërore', 'Gjuhët e Huaja'],
-                        score: 89,
-                        address: 'Rr. "Lutfi Musiqi", Vushtrri'
-                    }
-                ],
-                'teknike': [
-                    {
-                        id: 'vus_tek_001',
-                        name: 'SHML "Bahri Haxha" - Teknike',
-                        municipality: 'Vushtrri',
-                        type: 'Shkollë Teknike',
-                        status: 'publike',
-                        description: 'Shkollë teknike me drejtime të ndryshme.',
-                        minGrade: 2.5,
-                        capacity: 160,
-                        programs: ['Elektroteknikë', 'Makineri'],
-                        score: 84,
-                        address: 'Rr. "Bahri Haxha", Vushtrri'
-                    }
-                ],
-                'ekonomike': [
-                    {
-                        id: 'vus_eko_001',
-                        name: 'SHML "Lutfi Musiqi" - Ekonomike',
-                        municipality: 'Vushtrri',
-                        type: 'Shkollë Ekonomike',
-                        status: 'publike',
-                        description: 'Drejtimet ekonomike.',
-                        minGrade: 3.0,
-                        capacity: 110,
-                        programs: ['Ekonomi', 'Kontabilitet'],
-                        score: 83,
-                        address: 'Rr. "Lutfi Musiqi", Vushtrri'
-                    }
-                ]
-            },
-            
+
             // ============ KAÇANIK ============
             'kacanik': {
                 'gjimnaz': [
-                    {
-                        id: 'kac_gj_001',
-                        name: 'SHML "Skenderbeu"',
-                        municipality: 'Kaçanik',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me programe cilësore.',
-                        minGrade: 3.6,
-                        capacity: 170,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore', 'Gjuhët e Huaja'],
-                        score: 89,
-                        address: 'Rr. "Skenderbeu", Kaçanik'
-                    },
-                    {
-                        id: 'kac_gj_002',
-                        name: 'SHML "Feriz Guri"',
-                        municipality: 'Kaçanik',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë.',
-                        minGrade: 3.5,
-                        capacity: 160,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 88,
-                        address: 'Rr. "Feriz Guri", Kaçanik'
-                    }
+                    S({ id: 'kac_gj_001', name: 'Gjimnazi "Skënderbeu"', type: 'Gjimnaz', verified: true, source: SOURCES.kacanik,
+                        programs: ['Gjimnaz (drejtimet sipas konkursit të DKA Kaçanik)'] })
                 ],
                 'teknike': [
-                    {
-                        id: 'kac_tek_001',
-                        name: 'SHML "Feriz Guri" - Teknike',
-                        municipality: 'Kaçanik',
-                        type: 'Shkollë Teknike',
-                        status: 'publike',
-                        description: 'Shkollë teknike me drejtime të ndryshme.',
-                        minGrade: 2.5,
-                        capacity: 140,
-                        programs: ['Elektroteknikë', 'Makineri'],
-                        score: 83,
-                        address: 'Rr. "Feriz Guri", Kaçanik'
-                    }
-                ],
-                'ekonomike': [
-                    {
-                        id: 'kac_eko_001',
-                        name: 'SHML "Skenderbeu" - Ekonomike',
-                        municipality: 'Kaçanik',
-                        type: 'Shkollë Ekonomike',
-                        status: 'publike',
-                        description: 'Drejtimet ekonomike.',
-                        minGrade: 3.0,
-                        capacity: 100,
-                        programs: ['Ekonomi', 'Kontabilitet'],
-                        score: 82,
-                        address: 'Rr. "Skenderbeu", Kaçanik'
-                    }
+                    S({ id: 'kac_tek_001', name: 'SHMP "Feriz Guri dhe Vëllezërit Çaka"', type: 'Shkollë e Mesme Profesionale', verified: true, source: SOURCES.kacanik,
+                        programs: ['Elektroteknikë – automatikë', 'Profile të tjera sipas konkursit vjetor'] })
                 ]
             },
-            
-            // ============ LIPJAN ============
-            'lipjan': {
-                'gjimnaz': [
-                    {
-                        id: 'lip_gj_001',
-                        name: 'SHML "Adem Gllavica"',
-                        municipality: 'Lipjan',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë në Lipjan.',
-                        minGrade: 3.6,
-                        capacity: 170,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 88,
-                        address: 'Rr. "Adem Gllavica", Lipjan'
-                    },
-                    {
-                        id: 'lip_gj_002',
-                        name: 'SHML "Ulpiana"',
-                        municipality: 'Lipjan',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me programe të ndryshme.',
-                        minGrade: 3.5,
-                        capacity: 165,
-                        programs: ['Shkenca Shoqërore', 'Gjuhët e Huaja'],
-                        score: 87,
-                        address: 'Rr. "Ulpiana", Lipjan'
-                    }
-                ],
-                'ekonomike': [
-                    {
-                        id: 'lip_eko_001',
-                        name: 'Shkolla e Mesme Ekonomike - Lipjan',
-                        municipality: 'Lipjan',
-                        type: 'Shkollë Ekonomike',
-                        status: 'publike',
-                        description: 'Drejtimet ekonomike.',
-                        minGrade: 3.0,
-                        capacity: 100,
-                        programs: ['Ekonomi', 'Kontabilitet'],
-                        score: 82,
-                        address: 'Rr. "Ekonomike", Lipjan'
-                    }
-                ]
-            },
-            
-            // ============ SUHAREKË ============
-            'suhareke': {
-                'gjimnaz': [
-                    {
-                        id: 'suh_gj_001',
-                        name: 'SHML "Jeta e re"',
-                        municipality: 'Suharekë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me programe cilësore.',
-                        minGrade: 3.7,
-                        capacity: 175,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore', 'Gjuhët e Huaja'],
-                        score: 89,
-                        address: 'Rr. "Jeta e re", Suharekë'
-                    },
-                    {
-                        id: 'suh_gj_002',
-                        name: 'SHML "Abdyl Ramaj"',
-                        municipality: 'Suharekë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë.',
-                        minGrade: 3.6,
-                        capacity: 170,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 88,
-                        address: 'Rr. "Abdyl Ramaj", Suharekë'
-                    }
-                ]
-            },
-            
-            // ============ MALISHEVË ============
-            'malisheve': {
-                'gjimnaz': [
-                    {
-                        id: 'mal_gj_001',
-                        name: 'SHML "Abdyl Frashëri"',
-                        municipality: 'Malishevë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë në Malishevë.',
-                        minGrade: 3.5,
-                        capacity: 160,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 87,
-                        address: 'Rr. "Abdyl Frashëri", Malishevë'
-                    }
-                ],
-                'teknike': [
-                    {
-                        id: 'mal_tek_001',
-                        name: 'SHML "Qendra e Kompetencës" - Malishevë',
-                        municipality: 'Malishevë',
-                        type: 'Shkollë Teknike',
-                        status: 'publike',
-                        description: 'Qendër e kompetencës për profile teknike.',
-                        minGrade: 2.7,
-                        capacity: 150,
-                        programs: ['Elektroteknikë', 'Makineri'],
-                        score: 84,
-                        address: 'Rr. "Qendra e Kompetencës", Malishevë'
-                    }
-                ]
-            },
-            
-            // ============ SKËNDERAJ ============
-            'skenderaj': {
-                'gjimnaz': [
-                    {
-                        id: 'sk_gj_001',
-                        name: 'SHML "Hamëz Jashari"',
-                        municipality: 'Skënderaj',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me programe cilësore.',
-                        minGrade: 3.7,
-                        capacity: 175,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 89,
-                        address: 'Rr. "Hamëz Jashari", Skënderaj'
-                    },
-                    {
-                        id: 'sk_gj_002',
-                        name: 'SHML "Anton Çetta"',
-                        municipality: 'Skënderaj',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë.',
-                        minGrade: 3.6,
-                        capacity: 170,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 88,
-                        address: 'Rr. "Anton Çetta", Skënderaj'
-                    }
-                ]
-            },
-            
-            // ============ KLINË ============
-            'kline': {
-                'gjimnaz': [
-                    {
-                        id: 'kl_gj_001',
-                        name: 'SHML "Fehmi Agani"',
-                        municipality: 'Klinë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë në Klinë.',
-                        minGrade: 3.5,
-                        capacity: 160,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 87,
-                        address: 'Rr. "Fehmi Agani", Klinë'
-                    }
-                ]
-            },
-            
-            // ============ RAHOVEC ============
-            'rahovec': {
-                'gjimnaz': [
-                    {
-                        id: 'rah_gj_001',
-                        name: 'SHML "12 Maji"',
-                        municipality: 'Rahovec',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë në Rahovec.',
-                        minGrade: 3.6,
-                        capacity: 165,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 88,
-                        address: 'Rr. "12 Maji", Rahovec'
-                    },
-                    {
-                        id: 'rah_gj_002',
-                        name: 'SHML "Selajdin Mullaabazi"',
-                        municipality: 'Rahovec',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me programe cilësore.',
-                        minGrade: 3.5,
-                        capacity: 160,
-                        programs: ['Shkenca Shoqërore', 'Gjuhët e Huaja'],
-                        score: 87,
-                        address: 'Rr. "Selajdin Mullaabazi", Rahovec'
-                    }
-                ]
-            },
-            
-            // ============ KAMENICË ============
-            'kamenice': {
-                'gjimnaz': [
-                    {
-                        id: 'kam_gj_001',
-                        name: 'SHML "Ismail Qemali"',
-                        municipality: 'Kamenicë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me rezultate të mira.',
-                        minGrade: 3.4,
-                        capacity: 150,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 85,
-                        address: 'Rr. "Ismail Qemali", Kamenicë'
-                    }
-                ],
-                'teknike': [
-                    {
-                        id: 'kam_tek_001',
-                        name: 'Shkolla Teknike - Kamenicë',
-                        municipality: 'Kamenicë',
-                        type: 'Shkollë Teknike',
-                        status: 'publike',
-                        description: 'Shkollë teknike me drejtime të ndryshme.',
-                        minGrade: 2.5,
-                        capacity: 140,
-                        programs: ['Elektroteknikë', 'Makineri'],
-                        score: 82,
-                        address: 'Rr. "Teknike", Kamenicë'
-                    }
-                ]
-            },
-            
-            // ============ SHTIME ============
-            'shtime': {
-                'gjimnaz': [
-                    {
-                        id: 'sht_gj_001',
-                        name: 'SHML "Naim Frashëri"',
-                        municipality: 'Shtime',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë në Shtime.',
-                        minGrade: 3.4,
-                        capacity: 150,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 85,
-                        address: 'Rr. "Naim Frashëri", Shtime'
-                    }
-                ],
-                'teknike': [
-                    {
-                        id: 'sht_tek_001',
-                        name: 'Shkolla Profesionale - Shtime',
-                        municipality: 'Shtime',
-                        type: 'Shkollë Teknike',
-                        status: 'publike',
-                        description: 'Shkollë profesionale me drejtime të ndryshme.',
-                        minGrade: 2.5,
-                        capacity: 130,
-                        programs: ['Elektroteknikë', 'Makineri'],
-                        score: 82,
-                        address: 'Rr. "Profesionale", Shtime'
-                    }
-                ]
-            },
-            
-            // ============ FUSHË KOSOVË ============
-            'fushe-kosove': {
-                'gjimnaz': [
-                    {
-                        id: 'fk_gj_001',
-                        name: 'SHML "Hivzi Sulejmani"',
-                        municipality: 'Fushë Kosovë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë në Fushë Kosovë.',
-                        minGrade: 3.6,
-                        capacity: 180,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 89,
-                        address: 'Rr. "Hivzi Sulejmani", Fushë Kosovë'
-                    },
-                    {
-                        id: 'fk_gj_002',
-                        name: 'SHML "Minatori"',
-                        municipality: 'Fushë Kosovë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me programe të ndryshme.',
-                        minGrade: 3.5,
-                        capacity: 170,
-                        programs: ['Shkenca Shoqërore', 'Gjuhët e Huaja'],
-                        score: 88,
-                        address: 'Rr. "Minatori", Fushë Kosovë'
-                    }
-                ],
-                'teknike': [
-                    {
-                        id: 'fk_tek_001',
-                        name: 'SHML "Minatori" - Teknike',
-                        municipality: 'Fushë Kosovë',
-                        type: 'Shkollë Teknike',
-                        status: 'publike',
-                        description: 'Shkollë teknike me drejtime të ndryshme.',
-                        minGrade: 2.6,
-                        capacity: 160,
-                        programs: ['Elektroteknikë', 'Makineri', 'Minerologji'],
-                        score: 84,
-                        address: 'Rr. "Minatori", Fushë Kosovë'
-                    }
-                ]
-            },
-            
+
             // ============ VITI ============
             'viti': {
                 'gjimnaz': [
-                    {
-                        id: 'viti_gj_001',
-                        name: 'SHML "Kuvendi i Lezhës"',
-                        municipality: 'Viti',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë në Viti.',
-                        minGrade: 3.5,
-                        capacity: 160,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 86,
-                        address: 'Rr. "Kuvendi i Lezhës", Viti'
-                    }
+                    S({ id: 'viti_gj_001', name: 'Gjimnazi "Kuvendi i Lezhës"', type: 'Gjimnaz', verified: true, source: SOURCES.kqz,
+                        programs: ['Gjimnaz (drejtimet sipas konkursit)'] })
+                ],
+                'teknike': [
+                    S({ id: 'viti_tek_001', name: 'IAAP "Jonuz Zejnullahu"', type: 'Shkollë Profesionale', verified: true, source: SOURCES.viti,
+                        programs: ['Instalues elektrik', 'Profile të tjera sipas konkursit'] })
                 ]
             },
-            
-            // ============ OBLIQ ============
-            'obiliq': {
+
+            // ============ GJILAN ============
+            'gjilan': {
                 'gjimnaz': [
-                    {
-                        id: 'ob_gj_001',
-                        name: 'SHML "17 Shkurti"',
-                        municipality: 'Obiliq',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë në Obiliq.',
-                        minGrade: 3.5,
-                        capacity: 160,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 87,
-                        address: 'Rr. "17 Shkurti", Obiliq'
-                    }
+                    S({ id: 'gl_gj_001', name: 'Gjimnazi Shoqëror "Zenel Hajdini"', type: 'Gjimnaz', verified: true, source: SOURCES.gjilan, streams: ['shoqeror'],
+                        programs: ['Gjimnaz i shkencave shoqërore'] }),
+                    S({ id: 'gl_gj_002', name: 'Gjimnazi i Shkencave Natyrore – Gjilan', type: 'Gjimnaz', verified: true, source: SOURCES.gjilan, streams: ['natyror'],
+                        programs: ['Gjimnaz i shkencave natyrore'] })
+                ],
+                'teknike': [
+                    S({ id: 'gl_tek_001', name: 'SHMLT "Mehmet Isai"', type: 'Shkollë Teknike', verified: true, source: SOURCES.gjilan,
+                        programs: ['Profile teknike (sipas konkursit)'] })
+                ],
+                'ekonomike': [
+                    S({ id: 'gl_eko_001', name: 'SHMLE "Marin Barleti"', type: 'Shkollë Ekonomike', verified: true, source: SOURCES.gjilan,
+                        programs: ['Ekonomi (profilet sipas konkursit)'] })
+                ],
+                'bujqesi': [
+                    S({ id: 'gl_buj_001', name: 'SHMLAT "Arbëria"', type: 'Shkollë Bujqësore-Teknologjike', verified: true, source: SOURCES.gjilan,
+                        programs: ['Bujqësi dhe teknologji ushqimore (sipas konkursit)'] })
+                ],
+                'mjekesi': [
+                    S({ id: 'gl_mjk_001', name: 'SHMLM "Dr. Asllan Elezi"', type: 'Shkollë Mjekësie', verified: true, source: SOURCES.gjilan,
+                        programs: ['Profile shëndetësore (sipas konkursit)'] })
+                ],
+                'muzik': [
+                    S({ id: 'gl_muz_001', name: 'Shkolla e Mesme e Muzikës – Gjilan', type: 'Shkollë e Muzikës',
+                        programs: ['Muzikë'], note: UNVERIFIED_NOTE })
+                ],
+                'gjimnaz-privat': [
+                    S({ id: 'gl_gj_priv_001', name: 'Kolegji "Dardania"', type: 'Gjimnaz Privat', status: 'private',
+                        programs: ['Gjimnaz'], note: UNVERIFIED_NOTE })
                 ]
             },
-            
-            // ============ DRAGASH ============
-            'dragash': {
+
+            // ============ PEJË ============
+            'peje': {
                 'gjimnaz': [
-                    {
-                        id: 'dr_gj_001',
-                        name: 'SHML "Ruzhdi Berisha"',
-                        municipality: 'Dragash',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë në Dragash.',
-                        minGrade: 3.4,
-                        capacity: 150,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 85,
-                        address: 'Rr. "Ruzhdi Berisha", Dragash'
-                    }
+                    S({ id: 'pe_gj_001', name: 'Gjimnazi "Bedri Pejani"', type: 'Gjimnaz', verified: true, source: SOURCES.peje, streams: ['natyror', 'shoqeror'],
+                        programs: ['Shkenca natyrore', 'Shkenca shoqërore', 'Matematikë-informatikë', 'Gjuhësor'],
+                        description: 'Gjimnaz i themeluar më 1934, nga më të vjetrit në Kosovë.' })
+                ],
+                'teknike': [
+                    S({ id: 'pe_tek_001', name: 'SHMT "Shaban Spahija"', type: 'Shkollë Teknike', verified: true, source: SOURCES.peje,
+                        programs: ['Informatikë', 'Elektroinstalime', 'Automekanikë', 'Ndërtimtari', 'Zdrukthtari', 'Rrobaqepësi dhe dizajn kostumesh'] }),
+                    S({ id: 'pe_tek_002', name: 'IAAP "Rifat Gjota"', type: 'Shkollë Profesionale', verified: true, source: SOURCES.viti,
+                        programs: ['Energjetikë', 'Profile të tjera sipas konkursit'] })
+                ],
+                'mjekesi': [
+                    S({ id: 'pe_mjk_001', name: 'Shkolla e Mesme e Mjekësisë – Pejë', type: 'Shkollë Mjekësie', verified: true, source: SOURCES.peje,
+                        programs: ['Infermieri', 'Farmaci', 'Stomatologji', 'Mami dhe pediatri'] })
+                ],
+                'art': [
+                    S({ id: 'pe_art_001', name: 'Shkolla e Arteve – Pejë', type: 'Shkollë e Arteve',
+                        programs: ['Arte figurative'], note: UNVERIFIED_NOTE })
                 ]
             },
-            
-            // ============ ISTOG ============
-            'istog': {
+
+            // ============ MITROVICË E JUGUT ============
+            'mitrovice': {
                 'gjimnaz': [
-                    {
-                        id: 'is_gj_001',
-                        name: 'SHML "Haxhi Zeka"',
-                        municipality: 'Istog',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë në Istog.',
-                        minGrade: 3.5,
-                        capacity: 160,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 87,
-                        address: 'Rr. "Haxhi Zeka", Istog'
-                    }
+                    S({ id: 'mit_gj_003', name: 'Gjimnazi "Frang Bardhi"', type: 'Gjimnaz', verified: true, source: SOURCES.mitrovice,
+                        programs: ['Gjimnaz (drejtimet sipas konkursit)'] }),
+                    S({ id: 'mit_gj_001', name: 'SHML "Hasan Prishtina"', type: 'Gjimnaz', programs: ['Gjimnaz'], note: UNVERIFIED_NOTE }),
+                    S({ id: 'mit_gj_002', name: 'SHML "Tefta Tashko"', type: 'Gjimnaz', programs: ['Gjimnaz'], note: UNVERIFIED_NOTE })
+                ],
+                'mjekesi': [
+                    S({ id: 'mit_mjk_001', name: 'SHMM "Xheladin Deda"', type: 'Shkollë Mjekësie', verified: true, source: SOURCES.mitrovice,
+                        programs: ['Profile shëndetësore (sipas konkursit)'] })
+                ],
+                'teknike': [
+                    S({ id: 'mit_tek_001', name: 'SHMT "Arkitekt Sinani"', type: 'Shkollë Teknike', programs: ['Profile teknike'], note: UNVERIFIED_NOTE })
                 ]
             },
-            
+
+            // ============ GJAKOVË ============
+            'gjakove': {
+                'gjimnaz': [
+                    S({ id: 'gk_gj_001', name: 'Gjimnazi "Hajdar Dushi"', type: 'Gjimnaz', verified: true, source: SOURCES.gjakove,
+                        programs: ['Gjimnaz (drejtimet sipas konkursit)'] })
+                ],
+                'ekonomike': [
+                    S({ id: 'gk_eko_001', name: 'SHME "Kadri Kusari"', type: 'Shkollë Ekonomike', verified: true, source: SOURCES.gjakove,
+                        programs: ['Ekonomi (shumë profile, sipas konkursit)'] })
+                ]
+            },
+
             // ============ DEÇAN ============
             'decan': {
                 'gjimnaz': [
-                    {
-                        id: 'dec_gj_001',
-                        name: 'SHML "Vëllezërit Frashëri"',
-                        municipality: 'Deçan',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë në Deçan.',
-                        minGrade: 3.4,
-                        capacity: 155,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 86,
-                        address: 'Rr. "Vëllezërit Frashëri", Deçan'
-                    }
+                    S({ id: 'dec_gj_001', name: 'SHML "Vëllezërit Frashëri"', type: 'Gjimnaz', programs: ['Gjimnaz'], note: UNVERIFIED_NOTE })
+                ],
+                'teknike': [
+                    S({ id: 'dec_tek_001', name: 'IAAP "Tafil Kasumaj"', type: 'Shkollë Profesionale', verified: true, source: SOURCES.kqz,
+                        programs: ['Profile profesionale (sipas konkursit)'] })
                 ]
             },
-            
-            // ============ GLLOGOC ============
-            'gllogoc': {
+
+            // ============ DRENAS (GLLOGOC) ============
+            'drenas': {
+                'teknike': [
+                    S({ id: 'gll_gj_001', name: 'IAAP "Fehmi Lladrovci"', type: 'Shkollë Profesionale', verified: true, source: 'Lista publike e mësimdhënësve (SHPIK)',
+                        programs: ['Profile profesionale (sipas konkursit)'] })
+                ]
+            },
+
+            // ============ KOMUNAT E TJERA – TË DHËNA TË PAVERIFIKUARA ============
+            'podujeve': {
+                'gjimnaz': [ S({ id: 'pod_gj_002', name: 'SHML "Aleksandër Xhuvani"', type: 'Gjimnaz', programs: ['Gjimnaz'], note: UNVERIFIED_NOTE }) ],
+                'teknike': [ S({ id: 'pod_tek_001', name: 'SHMLT "Fan S. Noli"', type: 'Shkollë Teknike', programs: ['Instalues elektrik', 'Profile të tjera teknike'], note: UNVERIFIED_NOTE }) ]
+            },
+            'vushtrri': {
                 'gjimnaz': [
-                    {
-                        id: 'gll_gj_001',
-                        name: 'SHML "Fehmi Lladrovci"',
-                        municipality: 'Gllogoc',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë në Gllogoc.',
-                        minGrade: 3.4,
-                        capacity: 150,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 85,
-                        address: 'Rr. "Fehmi Lladrovci", Gllogoc'
-                    }
+                    S({ id: 'vus_gj_001', name: 'SHML "Bahri Haxha"', type: 'Gjimnaz', programs: ['Gjimnaz'], note: UNVERIFIED_NOTE }),
+                    S({ id: 'vus_gj_002', name: 'SHML "Lutfi Musiqi"', type: 'Gjimnaz', programs: ['Gjimnaz'], note: UNVERIFIED_NOTE })
                 ]
             },
-            
-            // ============ HANI I ELEZIT ============
+            'lipjan': {
+                'gjimnaz': [
+                    S({ id: 'lip_gj_001', name: 'SHML "Adem Gllavica"', type: 'Gjimnaz', programs: ['Gjimnaz'], note: UNVERIFIED_NOTE }),
+                    S({ id: 'lip_gj_002', name: 'SHML "Ulpiana"', type: 'Shkollë e mesme e lartë', programs: ['Sipas konkursit'], note: UNVERIFIED_NOTE })
+                ]
+            },
+            'suhareke': {
+                'gjimnaz': [
+                    S({ id: 'suh_gj_001', name: 'SHML "Jeta e Re"', type: 'Gjimnaz', programs: ['Gjimnaz'], note: UNVERIFIED_NOTE }),
+                    S({ id: 'suh_gj_002', name: 'SHML "Abdyl Ramaj"', type: 'Gjimnaz', programs: ['Gjimnaz'], note: UNVERIFIED_NOTE })
+                ]
+            },
+            'malisheve': {
+                'gjimnaz': [ S({ id: 'mal_gj_001', name: 'SHML "Abdyl Frashëri"', type: 'Gjimnaz', programs: ['Gjimnaz'], note: UNVERIFIED_NOTE }) ],
+                'teknike': [ S({ id: 'mal_tek_001', name: 'Qendra e Kompetencës – Malishevë', type: 'Shkollë Profesionale', programs: ['Profile teknike'], note: UNVERIFIED_NOTE }) ]
+            },
+            'skenderaj': {
+                'gjimnaz': [
+                    S({ id: 'sk_gj_001', name: 'SHML "Hamëz Jashari"', type: 'Gjimnaz', programs: ['Gjimnaz'], note: UNVERIFIED_NOTE }),
+                    S({ id: 'sk_gj_002', name: 'SHML "Anton Çetta"', type: 'Gjimnaz', programs: ['Gjimnaz'], note: UNVERIFIED_NOTE })
+                ]
+            },
+            'kline': {
+                'gjimnaz': [ S({ id: 'kl_gj_001', name: 'SHML "Fehmi Agani"', type: 'Gjimnaz', programs: ['Gjimnaz'], note: UNVERIFIED_NOTE }) ]
+            },
+            'rahovec': {
+                'gjimnaz': [
+                    S({ id: 'rah_gj_001', name: 'SHML "12 Maji"', type: 'Gjimnaz', programs: ['Gjimnaz'], note: UNVERIFIED_NOTE }),
+                    S({ id: 'rah_gj_002', name: 'SHML "Selajdin Mullaabazi"', type: 'Gjimnaz', programs: ['Gjimnaz'], note: UNVERIFIED_NOTE })
+                ]
+            },
+            'kamenice': {
+                'gjimnaz': [ S({ id: 'kam_gj_001', name: 'SHML "Ismail Qemali"', type: 'Gjimnaz', programs: ['Gjimnaz'], note: UNVERIFIED_NOTE }) ]
+            },
+            'shtime': {
+                'gjimnaz': [ S({ id: 'sht_gj_001', name: 'SHML "Naim Frashëri"', type: 'Gjimnaz', programs: ['Gjimnaz'], note: UNVERIFIED_NOTE }) ]
+            },
+            'fushe-kosove': {
+                'gjimnaz': [ S({ id: 'fk_gj_001', name: 'SHML "Hivzi Sulejmani"', type: 'Gjimnaz', programs: ['Gjimnaz'], note: UNVERIFIED_NOTE }) ],
+                'teknike': [ S({ id: 'fk_tek_001', name: 'SHML "Minatori"', type: 'Shkollë Teknike', programs: ['Profile teknike'], note: UNVERIFIED_NOTE }) ]
+            },
+            'obiliq': {
+                'gjimnaz': [ S({ id: 'ob_gj_001', name: 'SHML "17 Shkurti"', type: 'Gjimnaz', programs: ['Gjimnaz'], note: UNVERIFIED_NOTE }) ]
+            },
+            'dragash': {
+                'gjimnaz': [ S({ id: 'dr_gj_001', name: 'SHML "Ruzhdi Berisha"', type: 'Gjimnaz', programs: ['Gjimnaz'], note: UNVERIFIED_NOTE }) ]
+            },
+            'istog': {
+                'gjimnaz': [ S({ id: 'is_gj_001', name: 'SHML "Haxhi Zeka"', type: 'Gjimnaz', programs: ['Gjimnaz'], note: UNVERIFIED_NOTE }) ]
+            },
             'han-i-elezit': {
-                'gjimnaz': [
-                    {
-                        id: 'han_gj_001',
-                        name: 'SHML "Dardania"',
-                        municipality: 'Hani i Elezit',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë në Han të Elezit.',
-                        minGrade: 3.3,
-                        capacity: 140,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 84,
-                        address: 'Rr. "Dardania", Hani i Elezit'
-                    }
-                ]
+                'gjimnaz': [ S({ id: 'han_gj_001', name: 'SHML "Dardania"', type: 'Gjimnaz', programs: ['Gjimnaz'], note: UNVERIFIED_NOTE }) ]
             },
-            
-            // ============ MAMUSHË ============
             'mamusha': {
-                'gjimnaz': [
-                    {
-                        id: 'mam_gj_001',
-                        name: 'SHML "Ataturk"',
-                        municipality: 'Mamushë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me programe të ndryshme.',
-                        minGrade: 3.2,
-                        capacity: 130,
-                        programs: ['Shkenca Shoqërore', 'Gjuhët e Huaja'],
-                        score: 83,
-                        address: 'Rr. "Ataturk", Mamushë'
-                    }
-                ]
+                'gjimnaz': [ S({ id: 'mam_gj_001', name: 'SHML "Ataturk"', type: 'Gjimnaz', programs: ['Gjimnaz (mësim në gjuhën turke)'], note: UNVERIFIED_NOTE }) ]
             },
-            
-            // ============ SHTËRPCË ============
-            'shtterpce': {
-                'gjimnaz': [
-                    {
-                        id: 'shtp_gj_001',
-                        name: 'SHML "Kongresi i Manastirit"',
-                        municipality: 'Shtërpcë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz me traditë në Shtërpcë.',
-                        minGrade: 3.3,
-                        capacity: 135,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 84,
-                        address: 'Rr. "Kongresi i Manastirit", Shtërpcë'
-                    }
-                ]
-            },
-            
-            // ============ NOVOBËRDË ============
-            'novoberde': {
-                'gjimnaz': [
-                    {
-                        id: 'nov_gj_001',
-                        name: 'SHML "Novobërdë"',
-                        municipality: 'Novobërdë',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz në Novobërdë.',
-                        minGrade: 3.2,
-                        capacity: 120,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 82,
-                        address: 'Rr. "Novobërdë", Novobërdë'
-                    }
-                ]
-            },
-            
-            // ============ RANILLUG ============
-            'ranillug': {
-                'gjimnaz': [
-                    {
-                        id: 'ran_gj_001',
-                        name: 'SHML "Ranillug"',
-                        municipality: 'Ranillug',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz në Ranillug.',
-                        minGrade: 3.1,
-                        capacity: 110,
-                        programs: ['Shkenca Shoqërore', 'Gjuhët e Huaja'],
-                        score: 81,
-                        address: 'Rr. "Ranillug", Ranillug'
-                    }
-                ]
-            },
-            
-            // ============ MITROVICË VERI ============
-            'mitrovice-veri': {
-                'gjimnaz': [
-                    {
-                        id: 'mv_gj_001',
-                        name: 'Gjimnazi "Mitrovicë Veri"',
-                        municipality: 'Mitrovicë Veri',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz në pjesën veriore të Mitrovicës.',
-                        minGrade: 3.3,
-                        capacity: 140,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 83,
-                        address: 'Rr. "Veri", Mitrovicë Veri'
-                    }
-                ]
-            },
-            
-            // ============ ZUBIN POTOK ============
-            'zubin-potok': {
-                'gjimnaz': [
-                    {
-                        id: 'zp_gj_001',
-                        name: 'Gjimnazi "Zubin Potok"',
-                        municipality: 'Zubin Potok',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz në Zubin Potok.',
-                        minGrade: 3.2,
-                        capacity: 120,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 82,
-                        address: 'Rr. "Zubin Potok", Zubin Potok'
-                    }
-                ]
-            },
-            
-            // ============ ZVEÇAN ============
-            'zvecan': {
-                'gjimnaz': [
-                    {
-                        id: 'zv_gj_001',
-                        name: 'Gjimnazi "Zveçan"',
-                        municipality: 'Zveçan',
-                        type: 'Gjimnaz',
-                        status: 'publike',
-                        description: 'Gjimnaz në Zveçan.',
-                        minGrade: 3.2,
-                        capacity: 120,
-                        programs: ['Shkenca Natyrore', 'Shkenca Shoqërore'],
-                        score: 82,
-                        address: 'Rr. "Zveçan", Zveçan'
-                    }
-                ]
+            'shterpce': {
+                'gjimnaz': [ S({ id: 'shtp_gj_001', name: 'SHML "Kongresi i Manastirit"', type: 'Gjimnaz', programs: ['Gjimnaz'], note: UNVERIFIED_NOTE }) ]
             }
+            // Komunat pa të dhëna ende: Graçanicë, Junik, Kllokot, Leposaviq, Mitrovicë e Veriut,
+            // Novobërdë, Partesh, Ranillug, Zubin Potok, Zveçan (shumica me shkolla në sistemin serb).
+            // Shtoni shkollat përmes Admin Panel-it pasi t'i verifikoni.
         };
+
+        // Komunat që kanë një lloj të caktuar shkolle (llogaritet automatikisht nga databaza)
+        function municipalitiesWithType(type) {
+            return Object.keys(KOSOVO_HIGH_SCHOOLS_DATABASE)
+                .filter(m => (KOSOVO_HIGH_SCHOOLS_DATABASE[m][type] || []).length > 0);
+        }
+        function municipalityNamesWithType(type) {
+            return municipalitiesWithType(type)
+                .map(id => KOSOVO_MUNICIPALITIES.find(m => m.id === id)?.name || id)
+                .sort((a, b) => a.localeCompare(b))
+                .join(', ');
+        }
 
         // ============================================
         // VARIABLAT GLOBALE
@@ -3174,11 +1983,11 @@
                 description: "Ky profil karakterizohet nga interesimi për shkencat ekzakte, teknologjinë, matematikën dhe zgjidhjen logjike të problemeve.",
                 score: 0,
                 recommendations: [
-                    "Gjimnaz - Drejtimi i Shkencave të Natyrës dhe Matematikës",
-                    "Shkollë Teknike - Elektroteknikë, Makineri, Ndërtimtari",
-                    "Shkollë e Mjekësisë - Laborant Mjekësor",
-                    "Gjimnaz i Specializuar Matematikor - Prishtinë",
-                    "Shkollë Teknike - TI dhe Programim"
+                    "Gjimnaz i shkencave natyrore (kërkon mesataren ≥ 4.00 në fizikë, kimi, biologji, matematikë)",
+                    "Gjimnazi Matematik i Specializuar – Prishtinë (me provim pranues, për nxënës të shkëlqyeshëm)",
+                    "Shkollë elektroteknike – Zhvillues i aplikacioneve softuerike, Sisteme të TIK, Elektronikë",
+                    "Shkollë teknike – Ndërtimtari, Arkitekturë, Gjeodezi",
+                    "Shkollë e mjekësisë – Teknik i laborantit mjekësor, Teknik i farmacisë"
                 ]
             },
             shoqeror: {
@@ -3186,11 +1995,11 @@
                 description: "Ky profil tregon interesim për marrëdhëniet njerëzore, çështjet sociale, historinë dhe psikologjinë.",
                 score: 0,
                 recommendations: [
-                    "Gjimnaz - Drejtimi i Shkencave Shoqërore",
-                    "Shkollë Ekonomike - Menaxhment, Kontabilitet",
-                    "Gjimnaz - Drejtimi Gjuhësor",
-                    "Shkollë Ekonomike - Marketing dhe Biznes",
-                    "Shkollë Ekonomike - Bankë dhe Financa"
+                    "Gjimnaz i shkencave shoqërore dhe gjuhësore",
+                    "Shkollë ekonomike – Kontabilitet dhe tatime",
+                    "Shkollë ekonomike – Banka, financa dhe sigurime",
+                    "Shkollë juridike – Juridik, administratë dhe shërbime të zyrës",
+                    "Shkollë e mjekësisë – Bashkëpunëtor profesional i infermierisë"
                 ]
             },
             gjuhësor: {
@@ -3198,11 +2007,11 @@
                 description: "Ky profil karakterizohet nga aftësi të zhvilluara gjuhësore, interes për letërsinë, shkrimin kreativ dhe komunikimin efektiv.",
                 score: 0,
                 recommendations: [
-                    "Gjimnaz - Drejtimi Gjuhësor-Letrar",
-                    "Gjimnaz - Drejtimi i Gjuhëve të Huaja",
-                    "Shkollë Ekonomike - Marketing",
-                    "Gjimnaz - Gjuhë Angleze dhe Gjermane",
-                    "Shkollë Ekonomike - Turizëm"
+                    "Gjimnaz i shkencave shoqërore dhe gjuhësore",
+                    "Shkollë e hotelierisë dhe turizmit – Asistent i turizmit dhe udhëtimeve",
+                    "Shkollë e hotelierisë – Asistent i mikpritjes hoteliere",
+                    "Shkollë ekonomike – Marketing dhe shitje",
+                    "Shkollë elektroteknike – Dizajnim i mediave interaktive"
                 ]
             },
             artistik: {
@@ -3210,11 +2019,11 @@
                 description: "Ky profil tregon kreativitet të lartë, imagjinatë dhe aftësi artistike. Përfshin artet figurative dhe ato pamore.",
                 score: 0,
                 recommendations: [
-                    "Shkollë e Arteve - Pikturë, Skulpturë, Dizajn Grafik",
-                    "Shkollë Teknike - Dizajn dhe Arkitekturë",
-                    "Gjimnaz - Drejtimi i Përgjithshëm (me lëndë zgjedhore të artit)",
-                    "Shkollë e Arteve - Dizajn i Brendshëm",
-                    "Shkollë Teknike - Arkitekturë"
+                    "Shkollë e arteve (aty ku ofrohet – kontrolloni konkursin e DKA-së)",
+                    "Shkollë teknike – Arkitekturë",
+                    "Shkollë teknike – Grafikë e mediave, Grafikë e shtypit",
+                    "Shkollë elektroteknike – Teknik për dizajnimin e mediave interaktive",
+                    "Gjimnaz, me lëndë zgjedhore të artit"
                 ]
             },
             muzik: {
@@ -3222,11 +2031,11 @@
                 description: "Ky profil tregon talent dhe interes për muzikën, instrumente muzikore dhe interpretim.",
                 score: 0,
                 recommendations: [
-                    "Shkollë e Muzikës - Piano, Violinë, Kanto",
-                    "Shkollë e Arteve - Dega e Muzikës",
-                    "Gjimnaz - Drejtimi i Përgjithshëm (me lëndë zgjedhore të muzikës)",
-                    "Shkollë e Muzikës - Flaut, Violonçel",
-                    "Shkollë e Muzikës - Teori Muzike dhe Kompozicion"
+                    "Shkollë e muzikës – Bashkëpunëtor muzikor (kërkon testin kombëtar dhe provim pranues)",
+                    "Shkollë e muzikës – Drejtimi instrumental (kërkon shkollën e ulët të muzikës)",
+                    "Shkollat e muzikës: \"Prenk Jakova\" (Prishtinë), \"Lorenc Antoni\" (Prizren), Gjilan",
+                    "Gjimnaz, me lëndë zgjedhore të muzikës",
+                    "Shkollë e hotelierisë dhe turizmit – për ata që duan punë me publikun dhe evente"
                 ]
             }
         };
@@ -3427,14 +2236,14 @@
             
             if (filterSelect) {
                 filterSelect.innerHTML = '<option value="">Të gjitha komunat</option>';
-                KOSOVO_MUNICIPALITIES.sort((a, b) => a.name.localeCompare(b.name)).forEach(mun => {
+                [...KOSOVO_MUNICIPALITIES].sort((a, b) => a.name.localeCompare(b.name)).forEach(mun => {
                     filterSelect.innerHTML += `<option value="${mun.id}">${mun.name}</option>`;
                 });
             }
             
             if (newSchoolSelect) {
                 newSchoolSelect.innerHTML = '<option value="">Zgjidh komunën</option>';
-                KOSOVO_MUNICIPALITIES.sort((a, b) => a.name.localeCompare(b.name)).forEach(mun => {
+                [...KOSOVO_MUNICIPALITIES].sort((a, b) => a.name.localeCompare(b.name)).forEach(mun => {
                     newSchoolSelect.innerHTML += `<option value="${mun.id}">${mun.name}</option>`;
                 });
             }
@@ -3451,12 +2260,13 @@
             const type = document.getElementById('newSchoolType').value;
             const status = document.getElementById('newSchoolStatus').value;
             const programsStr = document.getElementById('newSchoolPrograms').value;
-            const minGrade = parseFloat(document.getElementById('newSchoolMinGrade').value);
-            const capacity = parseInt(document.getElementById('newSchoolCapacity').value);
+            const quotaVal = parseInt(document.getElementById('newSchoolQuota').value);
+            const source = document.getElementById('newSchoolSource').value.trim();
+            const verified = document.getElementById('newSchoolVerified').checked;
             const description = document.getElementById('newSchoolDescription').value;
 
-            if (!name || !municipalityId || !type || !status || !programsStr || !minGrade || !capacity) {
-                alert('Ju lutem plotësoni të gjitha fushat!');
+            if (!name || !municipalityId || !type || !status || !programsStr) {
+                alert('Ju lutem plotësoni emrin, komunën, tipin, statusin dhe profilet!');
                 return;
             }
 
@@ -3464,18 +2274,19 @@
             const programs = programsStr.split(',').map(p => p.trim());
             const newId = `${municipalityId}_${type}_${Date.now()}`;
 
-            const newSchool = {
+            const newSchool = S({
                 id: newId,
                 name: name,
-                municipality: municipality,
                 type: getSchoolTypeName(type),
                 status: status,
-                description: description + ' (Shtuar nga administratori)',
-                minGrade: minGrade,
-                capacity: capacity,
+                description: description,
+                quota: isNaN(quotaVal) ? null : quotaVal,
+                quotaYear: isNaN(quotaVal) ? null : 'sipas konkursit',
                 programs: programs,
-                score: 85
-            };
+                verified: verified,
+                source: source || 'Shtuar nga administratori',
+                note: verified ? '' : UNVERIFIED_NOTE
+            });
 
             if (!KOSOVO_HIGH_SCHOOLS_DATABASE[municipalityId]) {
                 KOSOVO_HIGH_SCHOOLS_DATABASE[municipalityId] = {};
@@ -3497,8 +2308,9 @@
             // Pastro formën
             document.getElementById('newSchoolName').value = '';
             document.getElementById('newSchoolPrograms').value = '';
-            document.getElementById('newSchoolMinGrade').value = '';
-            document.getElementById('newSchoolCapacity').value = '';
+            document.getElementById('newSchoolQuota').value = '';
+            document.getElementById('newSchoolSource').value = '';
+            document.getElementById('newSchoolVerified').checked = false;
             document.getElementById('newSchoolDescription').value = '';
         };
 
@@ -3516,6 +2328,7 @@
                         <option value="teknike" ${type === 'teknike' ? 'selected' : ''}>Shkollë Teknike</option>
                         <option value="ekonomike" ${type === 'ekonomike' ? 'selected' : ''}>Shkollë Ekonomike</option>
                         <option value="mjekesi" ${type === 'mjekesi' ? 'selected' : ''}>Shkollë Mjekësie</option>
+                        <option value="bujqesi" ${type === 'bujqesi' ? 'selected' : ''}>Shkollë Bujqësore / Veterinare</option>
                         <option value="art" ${type === 'art' ? 'selected' : ''}>Shkollë e Arteve</option>
                         <option value="muzik" ${type === 'muzik' ? 'selected' : ''}>Shkollë e Muzikës</option>
                         <option value="gjimnaz-privat" ${type === 'gjimnaz-privat' ? 'selected' : ''}>Gjimnaz Privat</option>
@@ -3529,7 +2342,10 @@
                     </select>
                 </td>
                 <td><input type="text" id="edit_programs_${schoolId}" value="${school.programs.join(', ')}"></td>
-                <td><input type="number" id="edit_minGrade_${schoolId}" step="0.1" value="${school.minGrade}"></td>
+                <td>
+                    <input type="number" id="edit_quota_${schoolId}" min="0" placeholder="Kuota" value="${school.quota ?? ''}">
+                    <label><input type="checkbox" id="edit_verified_${schoolId}" ${school.verified ? 'checked' : ''}> E verifikuar</label>
+                </td>
                 <td>
                     <button class="save-btn" onclick="saveSchoolEdit('${municipalityId}', '${type}', '${schoolId}')">Ruaj</button>
                     <button class="cancel-btn" onclick="loadSchoolsList()">Anulo</button>
@@ -3542,9 +2358,10 @@
             const newType = document.getElementById(`edit_type_${schoolId}`).value;
             const newStatus = document.getElementById(`edit_status_${schoolId}`).value;
             const newProgramsStr = document.getElementById(`edit_programs_${schoolId}`).value;
-            const newMinGrade = parseFloat(document.getElementById(`edit_minGrade_${schoolId}`).value);
+            const newQuota = parseInt(document.getElementById(`edit_quota_${schoolId}`).value);
+            const newVerified = document.getElementById(`edit_verified_${schoolId}`).checked;
 
-            if (!newName || !newProgramsStr || !newMinGrade) {
+            if (!newName || !newProgramsStr) {
                 alert('Ju lutem plotësoni të gjitha fushat!');
                 return;
             }
@@ -3559,7 +2376,9 @@
             // Përditëso të dhënat
             school.name = newName;
             school.programs = newProgramsStr.split(',').map(p => p.trim());
-            school.minGrade = newMinGrade;
+            school.quota = isNaN(newQuota) ? null : newQuota;
+            school.verified = newVerified;
+            school.note = newVerified ? '' : UNVERIFIED_NOTE;
             school.type = getSchoolTypeName(newType);
             school.status = newStatus;
 
@@ -3637,7 +2456,7 @@
             const dataStr = JSON.stringify(KOSOVO_HIGH_SCHOOLS_DATABASE, null, 2);
             const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
             
-            const exportFileDefaultName = 'shkollat_mashti_2024.json';
+            const exportFileDefaultName = 'shkollat_e_mesme_kosove.json';
             
             const linkElement = document.createElement('a');
             linkElement.setAttribute('href', dataUri);
@@ -3648,20 +2467,21 @@
         };
 
         window.exportToCSV = function() {
-            let csv = 'Komuna,Emri i Shkollës,Tipi,Statusi,Programet,Nota Min,Kapaciteti,Adresa\n';
+            let csv = '\uFEFFKomuna,Emri i Shkollës,Tipi,Statusi,Profilet,Kuota,Viti i kuotës,E verifikuar,Burimi\n';
             
             Object.keys(KOSOVO_HIGH_SCHOOLS_DATABASE).forEach(munId => {
                 const munName = KOSOVO_MUNICIPALITIES.find(m => m.id === munId)?.name || munId;
                 
                 Object.keys(KOSOVO_HIGH_SCHOOLS_DATABASE[munId]).forEach(type => {
                     KOSOVO_HIGH_SCHOOLS_DATABASE[munId][type].forEach(school => {
-                        csv += `"${munName}","${school.name}","${school.type}","${school.status || 'publike'}","${school.programs.join(';')}",${school.minGrade},${school.capacity},"${school.address || ''}"\n`;
+                        const q = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+                        csv += [munName, school.name, school.type, school.status || 'publike', school.programs.join('; '), school.quota ?? '', school.quotaYear ?? '', school.verified ? 'Po' : 'Jo', school.source || ''].map(q).join(',') + '\n';
                     });
                 });
             });
             
             const dataUri = 'data:text/csv;charset=utf-8,'+ encodeURIComponent(csv);
-            const exportFileDefaultName = 'shkollat_mashti_2024.csv';
+            const exportFileDefaultName = 'shkollat_e_mesme_kosove.csv';
             
             const linkElement = document.createElement('a');
             linkElement.setAttribute('href', dataUri);
@@ -3704,62 +2524,27 @@
 
         window.verifyData = function() {
             const resultDiv = document.getElementById('verificationResult');
-            let verified = true;
-            let messages = [];
-
-            // Verifiko që çdo komunë ka të paktën një gjimnaz
-            KOSOVO_MUNICIPALITIES.forEach(mun => {
-                if (KOSOVO_HIGH_SCHOOLS_DATABASE[mun.id] && 
-                    (KOSOVO_HIGH_SCHOOLS_DATABASE[mun.id]['gjimnaz'] || 
-                     KOSOVO_HIGH_SCHOOLS_DATABASE[mun.id]['gjimnaz-privat']) && 
-                    ((KOSOVO_HIGH_SCHOOLS_DATABASE[mun.id]['gjimnaz']?.length || 0) + 
-                     (KOSOVO_HIGH_SCHOOLS_DATABASE[mun.id]['gjimnaz-privat']?.length || 0)) > 0) {
-                    // OK
-                } else {
-                    verified = false;
-                    messages.push(`Komuna ${mun.name} nuk ka asnjë gjimnaz!`);
-                }
-            });
-
-            // Verifiko shkollat e specializuara
-            MUNICIPALITIES_WITH_ART_SCHOOLS.forEach(munId => {
-                const munName = KOSOVO_MUNICIPALITIES.find(m => m.id === munId).name;
-                if (!KOSOVO_HIGH_SCHOOLS_DATABASE[munId] || 
-                    !KOSOVO_HIGH_SCHOOLS_DATABASE[munId]['art'] ||
-                    KOSOVO_HIGH_SCHOOLS_DATABASE[munId]['art'].length === 0) {
-                    verified = false;
-                    messages.push(`Komuna ${munName} duhet të ketë shkollë të arteve sipas MASHTI-t!`);
-                }
-            });
-
-            MUNICIPALITIES_WITH_MUSIC_SCHOOLS.forEach(munId => {
-                const munName = KOSOVO_MUNICIPALITIES.find(m => m.id === munId).name;
-                if (!KOSOVO_HIGH_SCHOOLS_DATABASE[munId] || 
-                    !KOSOVO_HIGH_SCHOOLS_DATABASE[munId]['muzik'] ||
-                    KOSOVO_HIGH_SCHOOLS_DATABASE[munId]['muzik'].length === 0) {
-                    verified = false;
-                    messages.push(`Komuna ${munName} duhet të ketë shkollë të muzikës sipas MASHTI-t!`);
-                }
-            });
-
-            // Numëro totalin e shkollave
-            let totalSchools = 0;
+            let total = 0, verified = 0;
+            const unverifiedByMun = {};
             Object.keys(KOSOVO_HIGH_SCHOOLS_DATABASE).forEach(mun => {
-                Object.keys(KOSOVO_HIGH_SCHOOLS_DATABASE[mun]).forEach(type => {
-                    totalSchools += KOSOVO_HIGH_SCHOOLS_DATABASE[mun][type].length;
+                Object.values(KOSOVO_HIGH_SCHOOLS_DATABASE[mun]).forEach(list => {
+                    list.forEach(school => {
+                        total++;
+                        if (school.verified) verified++;
+                        else unverifiedByMun[mun] = (unverifiedByMun[mun] || 0) + 1;
+                    });
                 });
             });
-            
-            messages.push(`Totali i shkollave në databazë: ${totalSchools}`);
+            const noData = KOSOVO_MUNICIPALITIES.filter(m => !KOSOVO_HIGH_SCHOOLS_DATABASE[m.id]).map(m => m.name);
+            const unverifiedList = Object.entries(unverifiedByMun)
+                .map(([id, n]) => `${KOSOVO_MUNICIPALITIES.find(m => m.id === id)?.name || id} (${n})`).join(', ');
 
-            if (verified) {
-                resultDiv.innerHTML = `<span style="color: var(--accent-green);"><i class="fas fa-check-circle"></i> Të gjitha të dhënat janë të verifikuara dhe në rregull! (${totalSchools} shkolla)</span>`;
-                resultDiv.style.backgroundColor = '#d4edda';
-            } else {
-                resultDiv.innerHTML = '<span style="color: var(--accent-red);"><i class="fas fa-exclamation-triangle"></i> Problemet e gjetura:<br>' + messages.join('<br>') + '</span>';
-                resultDiv.style.backgroundColor = '#f8d7da';
-            }
-            
+            resultDiv.innerHTML = `
+                <p><strong>Gjithsej shkolla:</strong> ${total} &nbsp;|&nbsp; <strong>Të verifikuara:</strong> ${verified} &nbsp;|&nbsp; <strong>Të paverifikuara:</strong> ${total - verified}</p>
+                ${unverifiedList ? `<p><strong>Shkolla për t'u verifikuar sipas komunave:</strong> ${unverifiedList}</p>` : ''}
+                ${noData.length ? `<p><strong>Komuna pa asnjë shkollë në databazë:</strong> ${noData.join(', ')}</p>` : ''}
+                <p><small>Burimi më i mirë për verifikim: konkursi vjetor i DKA-së për regjistrimin në klasën X (publikohet në faqen e komunës).</small></p>`;
+            resultDiv.style.backgroundColor = (total - verified) === 0 && noData.length === 0 ? '#d4edda' : '#fff3cd';
             trackClick('verify_data');
         };
 
@@ -3776,10 +2561,10 @@
             const filterStatus = document.getElementById('filterStatus')?.value || '';
             const searchTerm = document.getElementById('searchSchool')?.value?.toLowerCase() || '';
             
-            let html = '<h4>Shkollat e Mesme të Kosovës - Regjistri MASHTI 2024</h4>';
+            let html = '<h4>Shkollat e Mesme të Larta të Kosovës</h4>';
             html += '<p style="margin-bottom: 15px;"><strong>Totali i shkollave:</strong> ' + getTotalSchoolsCount() + ' (publike + private)</p>';
             html += '<table class="schools-table">';
-            html += '<thead><tr><th>Komuna</th><th>Emri i Shkollës</th><th>Tipi</th><th>Statusi</th><th>Programet</th><th>Nota Min</th><th>Veprime</th></tr></thead><tbody>';
+            html += '<thead><tr><th>Komuna</th><th>Emri i Shkollës</th><th>Tipi</th><th>Statusi</th><th>Profilet</th><th>Kuota / Verifikimi</th><th>Veprime</th></tr></thead><tbody>';
             
             Object.keys(KOSOVO_HIGH_SCHOOLS_DATABASE).sort().forEach(municipalityId => {
                 if (filterMun && filterMun !== municipalityId) return;
@@ -3808,7 +2593,7 @@
                             <td>${school.type}</td>
                             <td>${school.status || 'publike'}</td>
                             <td>${school.programs.join(', ')}</td>
-                            <td>${school.minGrade}</td>
+                            <td>${school.quota ? school.quota + ' (' + school.quotaYear + ')' : '–'}<br>${school.verified ? '<span class="verified-badge">✔ E verifikuar</span>' : '<span class="unverified-badge">? E paverifikuar</span>'}</td>
                             <td>
                                 <button class="edit-btn" onclick="editSchool('${municipalityId}', '${schoolType}', '${school.id}')">
                                     <i class="fas fa-edit"></i> Ndrysho
@@ -3907,7 +2692,7 @@
             html += '<table class="schools-table">';
             html += '<thead><tr><th>Komuna</th><th>Publike</th><th>Private</th><th>Total</th></tr></thead><tbody>';
             
-            KOSOVO_MUNICIPALITIES.sort((a, b) => a.name.localeCompare(b.name)).forEach(mun => {
+            [...KOSOVO_MUNICIPALITIES].sort((a, b) => a.name.localeCompare(b.name)).forEach(mun => {
                 const data = schoolsByMunicipality[mun.id] || { publike: 0, private: 0, total: 0 };
                 
                 if (data.total > 0) {
@@ -3996,16 +2781,33 @@
         // ============================================
         // SISTEMI I AVANCUAR I ORIENTIMIT
         // ============================================
+        const TYPE_TO_GROUP = {
+            'teknike': 'teknike',
+            'ekonomike': 'ekonomike',
+            'mjekesi': 'shendetesi',
+            'bujqesi': 'shendetesi',
+            'art': 'artistike',
+            'muzik': 'artistike'
+        };
+
         function initializeAdvancedSystem() {
             const advancedContainer = document.getElementById('advancedSystemContainer');
+            const typeCard = (type, icon, title, desc) => `
+                <div class="school-type-card" data-type="${type}">
+                    <div class="school-type-icon">${icon}</div>
+                    <div class="school-type-title">${title}</div>
+                    <div class="school-type-description">${desc}</div>
+                </div>`;
             
             advancedContainer.innerHTML = `
                 <div class="info-section active" id="advancedInfoSection">
                     <h2><i class="fas fa-user-graduate"></i> Sistemi i Përzgjedhjes së Shkollës së Mesme</h2>
                     <p style="margin-bottom: 25px; background-color: var(--light-blue); padding: 15px; border-radius: 10px;">
-                        <i class="fas fa-check-circle" style="color: var(--accent-green);"></i> 
-                        Të dhënat e bazuara në regjistrin zyrtar të MASHTI-t 2024 (të verifikuara) - 
-                        <span class="private-badge">Përfshin shkolla publike dhe private</span>
+                        <i class="fas fa-info-circle" style="color: var(--secondary-blue);"></i> 
+                        Pikët llogariten sipas kritereve zyrtare të konkurseve të DKA-ve: suksesi kl. 6–9 (40 pikë),
+                        lëndët prioritare (20 pikë) dhe testi (40 pikë). Shkollat me <span class="verified-badge"><i class="fas fa-check"></i> E verifikuar</span>
+                        janë konfirmuar nga burime zyrtare; të tjerat duhet t'i kontrolloni me DKA-në e komunës.
+                        <br><small>Të dhënat u përditësuan: ${DATA_LAST_UPDATED}</small>
                     </p>
                     
                     <div class="info-grid">
@@ -4014,20 +2816,27 @@
                             <input type="text" id="advancedStudentName" placeholder="Shkruani emrin tuaj" value="${document.getElementById('firstName')?.value || ''}">
                         </div>
                         <div class="input-group">
-                            <label for="advancedMunicipality"><i class="fas fa-map-marker-alt"></i> Komuna e Banimit:</label>
+                            <label for="advancedMunicipality"><i class="fas fa-map-marker-alt"></i> Komuna ku e përfundoni klasën e 9-të:</label>
                             <select id="advancedMunicipality">
                                 <option value="">Zgjidhni komunën tuaj...</option>
-                                ${KOSOVO_MUNICIPALITIES.sort((a, b) => a.name.localeCompare(b.name)).map(m => `<option value="${m.id}">${m.name}</option>`).join('')}
+                                ${[...KOSOVO_MUNICIPALITIES].sort((a, b) => a.name.localeCompare(b.name)).map(m => `<option value="${m.id}">${m.name}</option>`).join('')}
                             </select>
                         </div>
                     </div>
 
-                    <div class="info-grid">
-                        <div class="input-group">
-                            <label for="advancedAverageGrade"><i class="fas fa-star"></i> Nota Mesatare (klasa 6-9):</label>
-                            <input type="number" id="advancedAverageGrade" min="1" max="5" step="0.1" placeholder="P.sh. 4.5" value="4.0">
-                            <small style="color: var(--text-light); margin-top: 5px;">Shkollat teknike pranojnë nota më të ulëta (2.5-3.0)</small>
+                    <div class="points-box">
+                        <h3><i class="fas fa-star"></i> Suksesi i përgjithshëm (nota mesatare e secilës klasë)</h3>
+                        <div class="grade-grid">
+                            ${[6, 7, 8, 9].map(k => `
+                                <div class="input-group">
+                                    <label for="gradeClass${k}">Klasa ${k}:</label>
+                                    <input type="number" id="gradeClass${k}" min="1" max="5" step="0.01" placeholder="p.sh. 4.50">
+                                </div>`).join('')}
                         </div>
+                        <small>Formula zyrtare: (kl.6 + kl.7 + kl.8 + kl.9) × 2 = maksimumi 40 pikë.</small>
+                    </div>
+
+                    <div class="info-grid">
                         <div class="input-group">
                             <label for="advancedSchoolStatus"><i class="fas fa-building"></i> Preferenca për statusin:</label>
                             <select id="advancedSchoolStatus">
@@ -4041,71 +2850,42 @@
                     <div id="advancedSchoolTypeSection" class="school-type-section">
                         <h2><i class="fas fa-graduation-cap"></i> Zgjedhni tipin e shkollës</h2>
                         <div class="school-types-grid">
-                            <div class="school-type-card" data-type="gjimnaz">
-                                <div class="school-type-icon">🎓</div>
-                                <div class="school-type-title">GJIMNAZ</div>
-                                <div class="school-type-description">
-                                    Përgatitje për universitet - 3 vite<br>
-                                    <small>Nota mesatare e rekomanduar: 3.5-5.0</small>
-                                </div>
-                            </div>
-                            <div class="school-type-card" data-type="teknike">
-                                <div class="school-type-icon">🔧</div>
-                                <div class="school-type-title">SHKOLLA TEKNIKE</div>
-                                <div class="school-type-description">
-                                    Profile teknike - 3 vite<br>
-                                    <small>Nota mesatare e rekomanduar: 2.5-4.5</small>
-                                </div>
-                            </div>
-                            <div class="school-type-card" data-type="ekonomike">
-                                <div class="school-type-icon">💼</div>
-                                <div class="school-type-title">SHKOLLA EKONOMIKE</div>
-                                <div class="school-type-description">
-                                    Ekonomi dhe biznes - 3 vite<br>
-                                    <small>Nota mesatare e rekomanduar: 3.0-4.5</small>
-                                </div>
-                            </div>
-                            <div class="school-type-card" data-type="mjekesi">
-                                <div class="school-type-icon">⚕️</div>
-                                <div class="school-type-title">SHKOLLA E MJEKËSISË</div>
-                                <div class="school-type-description">
-                                    Profile shëndetësore - 3 vite<br>
-                                    <small>Nota mesatare e rekomanduar: 3.5-5.0</small>
-                                </div>
-                            </div>
-                            <div class="school-type-card" data-type="art">
-                                <div class="school-type-icon">🎨</div>
-                                <div class="school-type-title">SHKOLLA E ARTEVE</div>
-                                <div class="school-type-description">
-                                    Dizajn, pikturë, skulpturë - 3 vite<br>
-                                    <small>Nota mesatare e rekomanduar: 3.0-4.5</small>
-                                </div>
-                            </div>
-                            <div class="school-type-card" data-type="muzik">
-                                <div class="school-type-icon">🎵</div>
-                                <div class="school-type-title">SHKOLLA E MUZIKËS</div>
-                                <div class="school-type-description">
-                                    Piano, violinë, kanto - 3 vite<br>
-                                    <small>Nota mesatare e rekomanduar: 3.0-4.5</small>
-                                </div>
-                            </div>
-                            <div class="school-type-card" data-type="gjimnaz-privat">
-                                <div class="school-type-icon">🏫</div>
-                                <div class="school-type-title">GJIMNAZ PRIVAT</div>
-                                <div class="school-type-description">
-                                    Gjimnaze private - 3 vite<br>
-                                    <small>Nota mesatare më fleksibile</small>
-                                </div>
-                            </div>
-                            <div class="school-type-card" data-type="kolegj-privat">
-                                <div class="school-type-icon">🏛️</div>
-                                <div class="school-type-title">KOLEGJ PRIVAT</div>
-                                <div class="school-type-description">
-                                    Kolegje private - 3 vite<br>
-                                    <small>Programe të ndryshme</small>
-                                </div>
-                            </div>
+                            ${typeCard('gjimnaz', '🎓', 'GJIMNAZ', 'Përgatitje për universitet – 3 vite<br><small>Kërkohet mesatarja ≥ 4.00 në lëndët prioritare</small>')}
+                            ${typeCard('teknike', '🔧', 'SHKOLLA TEKNIKE', 'Elektroteknikë, TIK, ndërtimtari – 3 vite<br><small>Renditje sipas pikëve</small>')}
+                            ${typeCard('ekonomike', '💼', 'EKONOMI / JURIDIK / TURIZËM', 'Kontabilitet, banka, hoteleri – 3 vite<br><small>Renditje sipas pikëve</small>')}
+                            ${typeCard('mjekesi', '⚕️', 'SHKOLLA E MJEKËSISË', 'Infermieri, farmaci, laborant – 3 vite<br><small>Kërkohet mesatarja ≥ 4.00 në lëndët prioritare</small>')}
+                            ${typeCard('bujqesi', '🌱', 'BUJQËSI & VETERINARI', 'Agrobiznes, hortikulturë, teknologji ushqimore<br><small>Renditje sipas pikëve</small>')}
+                            ${typeCard('art', '🎨', 'SHKOLLA E ARTEVE', 'Arte figurative<br><small>Mund të ketë provim pranues</small>')}
+                            ${typeCard('muzik', '🎵', 'SHKOLLA E MUZIKËS', 'Instrumental, bashkëpunëtor muzikor<br><small>Provim pranues i detyrueshëm</small>')}
+                            ${typeCard('gjimnaz-privat', '🏫', 'GJIMNAZ PRIVAT', 'Kriteret i cakton vetë shkolla<br><small>Me pagesë</small>')}
+                            ${typeCard('kolegj-privat', '🏛️', 'KOLEGJ PRIVAT', 'Kriteret i cakton vetë shkolla<br><small>Me pagesë</small>')}
                         </div>
+                    </div>
+
+                    <div id="gymStreamSection" class="points-box" style="display:none;">
+                        <h3><i class="fas fa-route"></i> Drejtimi i gjimnazit</h3>
+                        <select id="gymStream">
+                            <option value="natyror">Gjimnaz i shkencave natyrore</option>
+                            <option value="shoqeror">Gjimnaz i shkencave shoqërore dhe gjuhësore</option>
+                            <option value="matematikor">Gjimnazi Matematik i Specializuar (Prishtinë, me provim pranues)</option>
+                        </select>
+                    </div>
+
+                    <div id="prioritySection" class="points-box" style="display:none;">
+                        <h3><i class="fas fa-list-ol"></i> Lëndët prioritare (mesatarja e notave kl. 6–9 për secilën lëndë)</h3>
+                        <div class="grade-grid" id="priorityInputs"></div>
+                        <small id="priorityHint">Shuma e katër mesatareve = maksimumi 20 pikë.</small>
+                    </div>
+
+                    <div id="testSection" class="points-box" style="display:none;">
+                        <h3><i class="fas fa-file-alt"></i> Testi i arritshmërisë (opsional) – përqindja e saktë sipas fushave</h3>
+                        <div class="grade-grid">
+                            <div class="input-group"><label for="testGjuhe">Gjuhë amtare + anglisht (%)</label><input type="number" id="testGjuhe" min="0" max="100" placeholder="0–100"></div>
+                            <div class="input-group"><label for="testShoqerore">Shkenca shoqërore (%)</label><input type="number" id="testShoqerore" min="0" max="100" placeholder="0–100"></div>
+                            <div class="input-group"><label for="testMatematike">Matematikë + informatikë (%)</label><input type="number" id="testMatematike" min="0" max="100" placeholder="0–100"></div>
+                            <div class="input-group"><label for="testNatyrore">Shkenca natyrore (%)</label><input type="number" id="testNatyrore" min="0" max="100" placeholder="0–100"></div>
+                        </div>
+                        <small>Nëse testi nuk është mbajtur ende, lëreni bosh – do të shfaqet intervali i mundshëm i pikëve.</small>
                     </div>
 
                     <div id="advancedLocationSection" class="location-section">
@@ -4133,19 +2913,19 @@
                 <div id="advancedResultsSection" style="display: none;">
                     <div class="results-header">
                         <h2 class="results-title">Rekomandimet për shkollën e mesme</h2>
-                        <div class="match-score" id="matchScore">Përputhshmëria: 0%</div>
+                        <div class="match-score" id="matchScore">Pikët e parashikuara: –</div>
                     </div>
                     
                     <div class="student-info-print" id="advancedStudentInfoPrint"></div>
-                    
+                    <div id="pointsSummary" style="margin-top: 20px;"></div>
                     <div id="recommendedSchoolsContainer" style="margin-top: 30px;"></div>
                     
                     <div class="consultation-notice">
                         <h4><i class="fas fa-handshake"></i> Hapat e ardhshëm</h4>
-                        <p>1. Verifikoni nëse nota juaj e plotëson kushtin për pranim.</p>
-                        <p>2. Konsultohuni me këshilltarin shkollor për të diskutuar opsionet.</p>
-                        <p>3. Aplikimi bëhet në qershor-korrik nëpërmjet portalit të MASHTI-t.</p>
-                        <p>4. Për shkollat private, kontaktoni direkt për procedurat e aplikimit.</p>
+                        <p>1. Ndiqni konkursin e Drejtorisë Komunale të Arsimit (zakonisht në qershor–korrik; afati plotësues në gusht).</p>
+                        <p>2. Dokumentet dorëzohen në shkollën ku konkurroni: fletëparaqitja (merret në shkollë), dëftesa origjinale e kl. 6–9 dhe certifikata e lindjes.</p>
+                        <p>3. Kundër rezultatit mund të ankoheni brenda 2 ditëve të punës, fillimisht në shkollë e pastaj në DKA.</p>
+                        <p>4. Konsultohuni me këshilltarin për karrierë në shkollën tuaj. Për shkollat private kontaktoni drejtpërdrejt shkollën.</p>
                     </div>
                     
                     <div class="next-button-container" style="margin-top: 40px;">
@@ -4159,10 +2939,157 @@
             initializeAdvancedSystemLogic();
         }
 
+        // Grupi i kritereve sipas tipit të shkollës (dhe drejtimit të gjimnazit)
+        function getCriteriaGroup(schoolType) {
+            if (schoolType === 'gjimnaz') {
+                const stream = document.getElementById('gymStream')?.value || 'natyror';
+                return stream === 'shoqeror' ? 'shoqeror' : stream === 'matematikor' ? 'matematikor' : 'natyror';
+            }
+            return TYPE_TO_GROUP[schoolType] || null; // null = shkollë private
+        }
+
+        function renderPriorityInputs(schoolType) {
+            const group = getCriteriaGroup(schoolType);
+            const prioritySection = document.getElementById('prioritySection');
+            const testSection = document.getElementById('testSection');
+            const gymStreamSection = document.getElementById('gymStreamSection');
+            gymStreamSection.style.display = schoolType === 'gjimnaz' ? 'block' : 'none';
+
+            if (!group || group === 'matematikor') {
+                prioritySection.style.display = 'none';
+                testSection.style.display = 'none';
+                return;
+            }
+            const subjects = ADMISSION_RULES.prioritySubjects[group];
+            document.getElementById('priorityInputs').innerHTML = subjects.map((s, i) => `
+                <div class="input-group">
+                    <label for="prio${i}">${s}:</label>
+                    <input type="number" id="prio${i}" min="1" max="5" step="0.01" placeholder="p.sh. 4.25">
+                </div>`).join('');
+            document.getElementById('priorityHint').textContent = ADMISSION_RULES.strictGroups.includes(group)
+                ? 'Kusht: mesatarja e këtyre katër lëndëve duhet të jetë së paku 4.00. Shuma e mesatareve = maksimumi 20 pikë.'
+                : 'Shuma e katër mesatareve = maksimumi 20 pikë.';
+            prioritySection.style.display = 'block';
+            testSection.style.display = 'block';
+        }
+
+        function readNumber(id, min, max) {
+            const v = parseFloat(document.getElementById(id)?.value);
+            if (isNaN(v)) return null;
+            return Math.min(max, Math.max(min, v));
+        }
+
+        // Llogarit pikët sipas formulës zyrtare
+        function calculateAdmissionPoints(schoolType) {
+            const group = getCriteriaGroup(schoolType);
+            const classGrades = [6, 7, 8, 9].map(k => readNumber(`gradeClass${k}`, 1, 5));
+            const result = { group, classGrades, missing: [] };
+
+            if (classGrades.some(g => g === null)) result.missing.push('notat mesatare të klasëve 6–9');
+            result.successPoints = classGrades.every(g => g !== null)
+                ? classGrades.reduce((a, b) => a + b, 0) * 2 : null;
+            result.avgGrade = classGrades.every(g => g !== null)
+                ? classGrades.reduce((a, b) => a + b, 0) / 4 : null;
+
+            if (!group || group === 'matematikor') return result;
+
+            const prio = [0, 1, 2, 3].map(i => readNumber(`prio${i}`, 1, 5));
+            if (prio.some(p => p === null)) result.missing.push('notat e lëndëve prioritare');
+            result.priorityPoints = prio.every(p => p !== null) ? prio.reduce((a, b) => a + b, 0) : null;
+            result.priorityAvg = result.priorityPoints !== null ? result.priorityPoints / 4 : null;
+
+            const test = {
+                gjuhe: readNumber('testGjuhe', 0, 100),
+                shoqerore: readNumber('testShoqerore', 0, 100),
+                matematike: readNumber('testMatematike', 0, 100),
+                natyrore: readNumber('testNatyrore', 0, 100)
+            };
+            result.hasTest = Object.values(test).every(v => v !== null);
+            const weights = ADMISSION_RULES.testWeights[group];
+            result.testPoints = result.hasTest
+                ? Object.keys(weights).reduce((sum, area) => sum + weights[area] * test[area] / 100, 0) : null;
+
+            // Kushtet për gjimnaze dhe shkolla të mjekësisë
+            result.strict = ADMISSION_RULES.strictGroups.includes(group);
+            if (result.strict) {
+                result.meetsPriority = result.priorityAvg !== null ? result.priorityAvg >= 4.0 : null;
+                if (result.hasTest) {
+                    const priorityTestPct = group === 'shoqeror'
+                        ? (test.gjuhe + test.shoqerore) / 2
+                        : test.natyrore;
+                    result.meetsTest = priorityTestPct >= 40;
+                } else {
+                    result.meetsTest = null;
+                }
+            }
+
+            const known = (result.successPoints || 0) + (result.priorityPoints || 0);
+            result.total = result.hasTest ? known + result.testPoints : null;
+            result.minTotal = known;
+            result.maxTotal = known + 40;
+            return result;
+        }
+
+        function renderPointsSummary(points, schoolType) {
+            const box = document.getElementById('pointsSummary');
+            const scoreEl = document.getElementById('matchScore');
+            const fmt = v => (v === null || v === undefined) ? '–' : v.toFixed(2);
+
+            if (!points.group) {
+                box.innerHTML = `<div class="points-box"><p><i class="fas fa-info-circle"></i> Shkollat private i përcaktojnë vetë kriteret dhe pagesën. Kontaktoni drejtpërdrejt shkollën.</p></div>`;
+                scoreEl.textContent = 'Shkollë private';
+                return;
+            }
+            if (points.group === 'matematikor') {
+                box.innerHTML = `<div class="points-box">
+                    <p><strong>Gjimnazi Matematik i Specializuar</strong> ka kritere të veçanta (100 pikë): suksesi kl. 6–9 (20 pikë – 5 për çdo klasë me sukses të shkëlqyeshëm, 4 për shumë të mirë), 
+                    nota e matematikës kl. 6–9 (20 pikë), testi në matematikë (20 pikë) dhe provimi pranues në shkollë (40 pikë). Konkurrojnë vetëm nxënës të shkëlqyeshëm nga e gjithë Kosova.</p>
+                </div>`;
+                scoreEl.textContent = 'Provim pranues';
+                return;
+            }
+
+            let conditions = '';
+            if (points.strict) {
+                const st = (ok, yes, no, unknown) => ok === null
+                    ? `<li class="cond-unknown"><i class="fas fa-question-circle"></i> ${unknown}</li>`
+                    : ok ? `<li class="cond-ok"><i class="fas fa-check-circle"></i> ${yes}</li>`
+                         : `<li class="cond-fail"><i class="fas fa-times-circle"></i> ${no}</li>`;
+                conditions = `<ul class="conditions-list">
+                    ${st(points.meetsPriority,
+                        `Mesatarja e lëndëve prioritare (${fmt(points.priorityAvg)}) e plotëson kushtin ≥ 4.00`,
+                        `Mesatarja e lëndëve prioritare (${fmt(points.priorityAvg)}) është nën 4.00 – nuk plotësohet kushti për ${getSchoolTypeName(schoolType)}`,
+                        'Plotësoni notat e lëndëve prioritare për ta kontrolluar kushtin ≥ 4.00')}
+                    ${st(points.meetsTest,
+                        'Keni ≥ 40% në fushën prioritare të testit',
+                        'Keni nën 40% në fushën prioritare të testit – nuk plotësohet kushti',
+                        'Kushti i testit (≥ 40% në fushën prioritare) do të kontrollohet pas testit')}
+                </ul>`;
+            }
+
+            const totalText = points.total !== null
+                ? `${fmt(points.total)} / 100`
+                : `${fmt(points.minTotal)} – ${fmt(points.maxTotal)} / 100 (pa testin)`;
+
+            box.innerHTML = `<div class="points-box">
+                <h3><i class="fas fa-calculator"></i> Pikët e parashikuara sipas kritereve zyrtare</h3>
+                <table class="schools-table points-table">
+                    <tr><td>Suksesi kl. 6–9</td><td><strong>${fmt(points.successPoints)}</strong> / 40</td></tr>
+                    <tr><td>Lëndët prioritare (${ADMISSION_RULES.prioritySubjects[points.group].join(', ')})</td><td><strong>${fmt(points.priorityPoints)}</strong> / 20</td></tr>
+                    <tr><td>Testi i arritshmërisë</td><td><strong>${points.hasTest ? fmt(points.testPoints) : 'nuk është dhënë'}</strong> / 40</td></tr>
+                    <tr class="total-row"><td>Gjithsej</td><td><strong>${totalText}</strong></td></tr>
+                </table>
+                ${conditions}
+                ${points.missing.length ? `<p style="color: var(--accent-orange);"><i class="fas fa-exclamation-triangle"></i> Mungojnë: ${points.missing.join(', ')}.</p>` : ''}
+                <small>Renditja bëhet sipas pikëve brenda kuotës së secilës shkollë. Pikët minimale për pranim ndryshojnë çdo vit sipas numrit të kandidatëve.
+                Peshat e testit mund të ndryshojnë pak nga një DKA në tjetrën – kontrolloni konkursin e komunës suaj.</small>
+            </div>`;
+            scoreEl.textContent = points.total !== null ? `Pikët e parashikuara: ${points.total.toFixed(1)}` : 'Pikët: pa testin';
+        }
+
         function initializeAdvancedSystemLogic() {
             let selectedSchoolType = null;
             let selectedLocation = null;
-            let userMunicipality = null;
 
             const advancedInfoSection = document.getElementById('advancedInfoSection');
             const advancedResultsSection = document.getElementById('advancedResultsSection');
@@ -4177,8 +3104,11 @@
                     schoolTypeCards.forEach(c => c.classList.remove('selected'));
                     this.classList.add('selected');
                     selectedSchoolType = this.getAttribute('data-type');
+                    renderPriorityInputs(selectedSchoolType);
                 });
             });
+
+            document.getElementById('gymStream').addEventListener('change', () => renderPriorityInputs('gjimnaz'));
             
             locationBtns.forEach(btn => {
                 btn.addEventListener('click', function() {
@@ -4189,68 +3119,62 @@
             });
             
             advancedContinueBtn.addEventListener('click', function() {
-                const studentName = document.getElementById('advancedStudentName').value;
+                const studentName = document.getElementById('advancedStudentName').value.trim();
                 const municipality = advancedMunicipality.value;
-                const avgGrade = parseFloat(document.getElementById('advancedAverageGrade').value) || 0;
                 const statusPref = document.getElementById('advancedSchoolStatus').value;
                 
-                if (!studentName) {
-                    alert('Ju lutem shkruani emrin tuaj!');
-                    return;
-                }
-                
-                if (!municipality) {
-                    alert('Ju lutem zgjidhni komunën tuaj!');
-                    return;
-                }
-                
-                if (!selectedSchoolType) {
-                    alert('Ju lutem zgjidhni tipin e shkollës!');
-                    return;
-                }
-                
-                if (!selectedLocation) {
-                    alert('Ju lutem zgjidhni preferencën për vendndodhje!');
-                    return;
-                }
-                
-                userMunicipality = municipality;
+                if (!studentName) { alert('Ju lutem shkruani emrin tuaj!'); return; }
+                if (!municipality) { alert('Ju lutem zgjidhni komunën tuaj!'); return; }
+                if (!selectedSchoolType) { alert('Ju lutem zgjidhni tipin e shkollës!'); return; }
+                if (!selectedLocation) { alert('Ju lutem zgjidhni preferencën për vendndodhje!'); return; }
+
+                const points = calculateAdmissionPoints(selectedSchoolType);
                 
                 advancedInfoSection.style.display = 'none';
                 advancedResultsSection.style.display = 'block';
                 
                 const municipalityName = KOSOVO_MUNICIPALITIES.find(m => m.id === municipality)?.name || municipality;
+                const streamName = selectedSchoolType === 'gjimnaz'
+                    ? ` – ${document.getElementById('gymStream').selectedOptions[0].textContent}` : '';
                 
                 document.getElementById('advancedStudentInfoPrint').innerHTML = `
-                    <p><strong><i class="fas fa-user-graduate"></i> Nxënësi:</strong> ${studentName}</p>
+                    <p><strong><i class="fas fa-user-graduate"></i> Nxënësi:</strong> ${escapeHtml(studentName)}</p>
                     <p><strong><i class="fas fa-map-marker-alt"></i> Komuna:</strong> ${municipalityName}</p>
-                    <p><strong><i class="fas fa-graduation-cap"></i> Tipi i shkollës:</strong> ${getSchoolTypeName(selectedSchoolType)}</p>
-                    <p><strong><i class="fas fa-star"></i> Nota mesatare:</strong> ${avgGrade.toFixed(1)}</p>
+                    <p><strong><i class="fas fa-graduation-cap"></i> Tipi i shkollës:</strong> ${getSchoolTypeName(selectedSchoolType)}${streamName}</p>
+                    <p><strong><i class="fas fa-star"></i> Suksesi mesatar kl. 6–9:</strong> ${points.avgGrade !== null ? points.avgGrade.toFixed(2) : '–'}</p>
                     <p><strong><i class="fas fa-building"></i> Statusi:</strong> ${statusPref ? (statusPref === 'publike' ? 'Vetëm publike' : 'Vetëm private') : 'Të gjitha'}</p>
                 `;
+
+                renderPointsSummary(points, selectedSchoolType);
                 
-                generateSchoolRecommendations(userMunicipality, selectedSchoolType, selectedLocation, {
-                    avgGrade: avgGrade,
-                    statusPref: statusPref
+                generateSchoolRecommendations(municipality, selectedSchoolType, selectedLocation, {
+                    statusPref: statusPref,
+                    municipality: municipality,
+                    stream: selectedSchoolType === 'gjimnaz' ? document.getElementById('gymStream').value : null,
+                    points: points
                 });
                 
-                // Regjistro kërkimin
                 trackClick('advanced_search', { 
                     municipality: municipality, 
                     schoolType: selectedSchoolType,
                     location: selectedLocation
                 });
+                window.scrollTo(0, 0);
             });
             
             advancedRestartBtn.addEventListener('click', function() {
                 advancedInfoSection.style.display = 'block';
                 advancedResultsSection.style.display = 'none';
-                
                 schoolTypeCards.forEach(card => card.classList.remove('selected'));
                 locationBtns.forEach(btn => btn.classList.remove('active'));
                 selectedSchoolType = null;
                 selectedLocation = null;
+                renderPriorityInputs(null);
             });
+        }
+
+        function escapeHtml(str) {
+            return String(str).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
         }
 
         function generateSchoolRecommendations(municipality, schoolType, location, options) {
@@ -4262,114 +3186,98 @@
                 municipalitiesToSearch = [municipality];
             } else if (location === 'rajon') {
                 municipalitiesToSearch = getRegionalMunicipalities(municipality);
-            } else if (location === 'gjithë-kosova') {
+            } else {
                 municipalitiesToSearch = Object.keys(KOSOVO_HIGH_SCHOOLS_DATABASE);
+            }
+
+            // Gjimnazi matematik gjendet vetëm në Prishtinë dhe pranon nga e gjithë Kosova
+            if (options.stream === 'matematikor' && !municipalitiesToSearch.includes('prishtine')) {
+                municipalitiesToSearch.push('prishtine');
             }
             
             municipalitiesToSearch.forEach(munId => {
-                if (KOSOVO_HIGH_SCHOOLS_DATABASE[munId] && KOSOVO_HIGH_SCHOOLS_DATABASE[munId][schoolType]) {
-                    KOSOVO_HIGH_SCHOOLS_DATABASE[munId][schoolType].forEach(school => {
-                        // Filtro sipas statusit nëse është zgjedhur
-                        if (options.statusPref && school.status !== options.statusPref) return;
-                        
-                        let matchScore = calculateMatchScore(school, options);
-                        recommendedSchools.push({
-                            ...school,
-                            municipality: munId,
-                            matchScore: matchScore
-                        });
+                const list = KOSOVO_HIGH_SCHOOLS_DATABASE[munId]?.[schoolType] || [];
+                list.forEach(school => {
+                    if (options.statusPref && (school.status || 'publike') !== options.statusPref) return;
+                    // Filtro gjimnazet sipas drejtimit (shkollat me drejtim të panjohur mbeten)
+                    if (options.stream) {
+                        const streams = school.streams || [];
+                        if (options.stream === 'matematikor' && !streams.includes('matematikor')) return;
+                        if (options.stream !== 'matematikor' && streams.length && !streams.includes(options.stream)) return;
+                    }
+                    recommendedSchools.push({
+                        ...school,
+                        municipality: munId,
+                        matchScore: calculateMatchScore({ ...school, municipality: munId }, options)
                     });
-                }
+                });
             });
             
             if (recommendedSchools.length === 0) {
-                let message = '';
-                if (schoolType === 'mjekesi' && !MUNICIPALITIES_WITH_MEDICAL_SCHOOLS.includes(municipality)) {
-                    message = `Nuk ka Shkollë të Mjekësisë në komunën tuaj. Shkollat e Mjekësisë ekzistojnë vetëm në: Prishtinë, Prizren, Ferizaj, Gjilan, Pejë, Mitrovicë, Gjakovë. Ju lutem zgjidhni "Në komuna të rajonit" ose "Kudo në Kosovë".`;
-                } else if (schoolType === 'art' && !MUNICIPALITIES_WITH_ART_SCHOOLS.includes(municipality)) {
-                    message = `Nuk ka Shkollë të Arteve në komunën tuaj. Shkollat e Arteve ekzistojnë në: Prishtinë, Prizren, Pejë, Gjilan. Ju lutem zgjidhni "Në komuna të rajonit" ose "Kudo në Kosovë".`;
-                } else if (schoolType === 'muzik' && !MUNICIPALITIES_WITH_MUSIC_SCHOOLS.includes(municipality)) {
-                    message = `Nuk ka Shkollë të Muzikës në komunën tuaj. Shkollat e Muzikës ekzistojnë në: Prishtinë, Gjilan, Prizren. Ju lutem zgjidhni "Në komuna të rajonit" ose "Kudo në Kosovë".`;
-                } else {
-                    message = `Nuk u gjet asnjë shkollë e tipit ${getSchoolTypeName(schoolType)} në komunat e zgjedhura.`;
-                }
-                
-                // Sugjero alternativa
-                if (options.statusPref) {
-                    message += ` Gjithashtu, keni zgjedhur vetëm shkolla ${options.statusPref === 'publike' ? 'publike' : 'private'}.`;
-                }
-                
+                const where = municipalityNamesWithType(schoolType);
+                let message = `Nuk u gjet asnjë shkollë e tipit "${getSchoolTypeName(schoolType)}" në komunat e zgjedhura.`;
+                if (where) message += ` Në databazë ky tip shkolle gjendet në: ${where}. Provoni "Në komuna të rajonit" ose "Kudo në Kosovë".`;
+                if (options.statusPref) message += ` Keni zgjedhur vetëm shkolla ${options.statusPref === 'publike' ? 'publike' : 'private'}.`;
+                message += ' Databaza nuk është ende e plotë për të gjitha komunat – kontrolloni edhe konkursin e DKA-së.';
                 container.innerHTML = `
                     <div class="profile-card" style="border-top-color: var(--accent-red);">
                         <h3 class="profile-title"><i class="fas fa-exclamation-triangle"></i> Nuk u gjetën shkolla</h3>
                         <p class="profile-description">${message}</p>
-                    </div>
-                `;
-                document.getElementById('matchScore').textContent = 'Përputhshmëria: 0%';
+                    </div>`;
                 return;
             }
             
             recommendedSchools.sort((a, b) => b.matchScore - a.matchScore);
-            recommendedSchools = recommendedSchools.slice(0, 10); // Trego 10 rekomandimet më të mira
-            
-            let score = recommendedSchools[0].matchScore;
-            document.getElementById('matchScore').textContent = `Përputhshmëria: ${Math.round(score)}%`;
+            recommendedSchools = recommendedSchools.slice(0, 12);
+
+            const p = options.points || {};
+            const failsStrict = p.strict && (p.meetsPriority === false || p.meetsTest === false);
             
             let html = '<h3 class="recommendations-title"><i class="fas fa-school"></i> Shkollat e rekomanduara</h3>';
-            html += '<p style="margin-bottom: 20px;">Renditur sipas përputhshmërisë me preferencat tuaja dhe notës mesatare. Klikoni në shkollë për më shumë detaje.</p>';
+            html += '<p style="margin-bottom: 20px;">Renditur sipas afërsisë, përshtatjes me profilin nga testi i paraorientimit dhe besueshmërisë së të dhënave.</p>';
+            if (failsStrict) {
+                html += `<div class="consultation-notice" style="border-left-color: var(--accent-red);"><h4><i class="fas fa-exclamation-circle"></i> Kujdes</h4>
+                    <p>Sipas notave që keni shënuar, nuk e plotësoni kushtin minimal për ${getSchoolTypeName(schoolType).toLowerCase()}. 
+                    Shikoni edhe shkollat profesionale (teknike, ekonomike, bujqësore), ku pranimi bëhet vetëm sipas renditjes së pikëve.</p></div>`;
+            }
             
             recommendedSchools.forEach((school, index) => {
                 const municipalityName = KOSOVO_MUNICIPALITIES.find(m => m.id === school.municipality)?.name || school.municipality;
-                const meetsGrade = options.avgGrade >= school.minGrade;
-                const statusBadge = school.status === 'private' ? 
-                    '<span class="private-badge">Private</span>' : 
-                    '<span class="mashti-badge">Publike</span>';
+                const statusBadge = school.status === 'private'
+                    ? '<span class="private-badge">Private</span>'
+                    : '<span class="mashti-badge">Publike</span>';
+                const verifiedBadge = school.verified
+                    ? '<span class="verified-badge"><i class="fas fa-check"></i> E verifikuar</span>'
+                    : '<span class="unverified-badge"><i class="fas fa-question"></i> E paverifikuar</span>';
+                const residentWarning = school.residentOnly && school.municipality !== options.municipality
+                    ? `<p class="cond-fail"><i class="fas fa-exclamation-triangle"></i> Sipas konkursit të DKA-së, në këtë shkollë konkurrojnë vetëm nxënësit që e kanë përfunduar arsimin e obligueshëm në komunën e ${municipalityName} (përveç profileve që mungojnë në komunat tjera).</p>`
+                    : '';
                 
                 html += `
-                    <div class="recommended-school-card ${!meetsGrade ? 'warning' : ''}" 
-                         onclick="trackSchoolClick('${school.id}', '${school.name}')"
+                    <div class="recommended-school-card ${failsStrict || residentWarning ? 'warning' : ''} ${school.verified ? '' : 'unverified'}" 
+                         onclick="trackSchoolClick('${school.id}', '${school.name.replace(/'/g, "\\'").replace(/"/g, '&quot;')}')"
                          style="cursor: pointer;">
                         <div class="school-header">
-                            <span class="school-name">${index + 1}. ${school.name} ${statusBadge}</span>
+                            <span class="school-name">${index + 1}. ${school.name} ${statusBadge} ${verifiedBadge}</span>
                             <span class="match-percent">${Math.round(school.matchScore)}%</span>
                         </div>
                         <p><strong><i class="fas fa-map-marker-alt"></i> Komuna:</strong> ${municipalityName}</p>
                         <p><strong><i class="fas fa-tag"></i> Lloji i shkollës:</strong> ${school.type}</p>
-                        <p><strong><i class="fas fa-book"></i> Programet:</strong> ${school.programs.join(', ')}</p>
-                        <p><strong><i class="fas fa-star"></i> Nota minimale e kërkuar:</strong> ${school.minGrade} 
-                            ${meetsGrade ? 
-                                '<span style="color: var(--accent-green); margin-left: 10px;"><i class="fas fa-check-circle"></i> Plotëson kushtin</span>' : 
-                                '<span style="color: var(--accent-red); margin-left: 10px;"><i class="fas fa-times-circle"></i> Nuk e plotëson kushtin (nota juaj është më e ulët)</span>'}
-                        </p>
-                        <p><strong><i class="fas fa-users"></i> Vendet e lira:</strong> ${school.capacity} nxënës</p>
-                        ${school.address ? `<p><strong><i class="fas fa-map-pin"></i> Adresa:</strong> ${school.address}</p>` : ''}
-                        <p><strong><i class="fas fa-info-circle"></i> Përshkrimi:</strong> ${school.description}</p>
-                        ${school.tuition ? `<p><strong><i class="fas fa-euro-sign"></i> Pagesa:</strong> ${school.tuition}</p>` : ''}
-                        ${school.website ? `<p><strong><i class="fas fa-globe"></i> Website:</strong> ${school.website}</p>` : ''}
+                        <p><strong><i class="fas fa-book"></i> Profilet / drejtimet:</strong> ${school.programs.join(', ')}</p>
+                        ${school.quota ? `<p><strong><i class="fas fa-users"></i> Kuota e shpallur (${school.quotaYear}):</strong> ${school.quota} nxënës</p>` : ''}
+                        ${school.description ? `<p><strong><i class="fas fa-info-circle"></i> Përshkrimi:</strong> ${school.description}</p>` : ''}
+                        ${residentWarning}
+                        ${school.note ? `<p class="cond-unknown"><i class="fas fa-exclamation-circle"></i> ${school.note}</p>` : ''}
+                        ${school.source ? `<p style="font-size: 0.8rem; color: var(--text-light);"><i class="fas fa-link"></i> Burimi: ${school.source}</p>` : ''}
                     </div>
                 `;
             });
             
-            // Shto rekomandime alternative nëse ka
             if (recommendedSchools.length < 3) {
-                html += '<div class="consultation-notice"><h4><i class="fas fa-lightbulb"></i> Rekomandime alternative</h4>';
-                html += '<p>Mund të konsideroni edhe këto opsione:</p><ul>';
-                
-                // Sugjero gjimnaz nëse nuk ka shkolla të specializuara
-                if (schoolType !== 'gjimnaz' && schoolType !== 'gjimnaz-privat') {
-                    html += '<li>Gjimnaz i përgjithshëm - përgatitje më e gjerë për universitet</li>';
-                }
-                
-                // Sugjero shkolla private nëse ka
-                if (options.statusPref !== 'private') {
-                    html += '<li>Shkolla private - mund të kenë kushte më fleksibile për pranim</li>';
-                }
-                
-                // Sugjero shkolla në komuna fqinje
-                if (location === 'komuna') {
-                    html += '<li>Kërkoni në komuna fqinje duke zgjedhur "Në komuna të rajonit"</li>';
-                }
-                
+                html += '<div class="consultation-notice"><h4><i class="fas fa-lightbulb"></i> Rekomandime alternative</h4><ul>';
+                if (schoolType !== 'gjimnaz') html += '<li>Gjimnazi – përgatitje më e gjerë për universitet (kërkon mesataren ≥ 4.00 në lëndët prioritare)</li>';
+                if (location === 'komuna') html += '<li>Kërkoni në komuna fqinje duke zgjedhur "Në komuna të rajonit"</li>';
+                html += '<li>Kontrolloni konkursin e DKA-së në komunën tuaj – mund të ketë profile që ende nuk janë në këtë databazë</li>';
                 html += '</ul></div>';
             }
             
@@ -4380,94 +3288,67 @@
             trackClick('school_click', { schoolId: schoolId, schoolName: schoolName });
         }
 
+        // Përshtatja (0–100): nuk është probabilitet pranimi, por renditje orientuese
         function calculateMatchScore(school, options) {
-            let score = 70;
-            
-            // Faktori kryesor: nota mesatare
-            if (options.avgGrade >= school.minGrade) {
-                score += (options.avgGrade - school.minGrade) * 20;
-            } else {
-                score -= (school.minGrade - options.avgGrade) * 30;
-            }
-            
-            // Preferencat nga testi i paraorientimit
-            if (basicTestResults.topProfile) {
-                if (basicTestResults.topProfile === 'shkencor' && 
-                    (school.programs.some(p => p.includes('Shkenca Natyrore') || p.includes('Elektroteknikë') || 
-                     p.includes('Matematikë') || p.includes('Informatikë') || 
-                     p.includes('Fizikë') || p.includes('Kimi') ||
-                     p.includes('Laborant')))) {
-                    score += 20;
-                }
-                if (basicTestResults.topProfile === 'gjuhësor' && 
-                    (school.programs.some(p => p.includes('Gjuhët e Huaja') || p.includes('Letërsi')))) {
-                    score += 20;
-                }
-                if (basicTestResults.topProfile === 'shoqeror' && 
-                    (school.programs.some(p => p.includes('Shkenca Shoqërore') || p.includes('Ekonomi') || 
-                     p.includes('Menaxhment') || p.includes('Kontabilitet') ||
-                     p.includes('Marketing') || p.includes('Biznes')))) {
-                    score += 20;
-                }
-                if (basicTestResults.topProfile === 'artistik' && 
-                    (school.programs.some(p => p.includes('Art') || p.includes('Pikturë') || 
-                     p.includes('Dizajn') || p.includes('Arkitekturë') ||
-                     p.includes('Skulpturë') || p.includes('Dizajn Grafik')))) {
-                    score += 20;
-                }
-                if (basicTestResults.topProfile === 'muzik' && 
-                    (school.programs.some(p => p.includes('Piano') || p.includes('Violinë') || 
-                     p.includes('Kanto') || p.includes('Violonçel') ||
-                     p.includes('Flaut') || p.includes('Teori Muzike')))) {
-                    score += 20;
-                }
-            }
-            
-            // Bonusi për shkolla në komunën e banimit
-            if (school.municipality === options.municipality) {
-                score += 10;
-            }
-            
+            let score = 55;
+            const text = (school.programs || []).join(' ').toLowerCase() + ' ' + (school.type || '').toLowerCase();
+            const has = (...words) => words.some(w => text.includes(w));
+            const profile = basicTestResults.topProfile;
+
+            if (profile === 'shkencor' && has('natyror', 'matemat', 'informatik', 'tik', 'elektr', 'softuer', 'energjet', 'laborant', 'farmaci', 'teknik')) score += 20;
+            if (profile === 'shoqeror' && has('shoqëror', 'ekonom', 'kontabilitet', 'banka', 'juridik', 'administrat', 'marketing', 'infermier')) score += 20;
+            if (profile === 'gjuhësor' && has('gjuhësor', 'turiz', 'mikpritje', 'marketing')) score += 20;
+            if (profile === 'artistik' && has('art', 'grafik', 'dizajn', 'arkitekt', 'media')) score += 20;
+            if (profile === 'muzik' && has('muzik', 'instrumental', 'balet')) score += 20;
+
+            if (school.municipality === options.municipality) score += 15;
+            if (school.verified) score += 10;
+            if (school.residentOnly && school.municipality !== options.municipality) score -= 35;
+
             return Math.min(100, Math.max(0, score));
         }
 
         function getRegionalMunicipalities(municipality) {
             const regions = {
-                'prishtine': ['prishtine', 'fushe-kosove', 'lipjan', 'podujeve', 'drenas', 'obiliq', 'gllogoc'],
-                'ferizaj': ['ferizaj', 'kacanik', 'viti', 'shtime', 'han-i-elezit'],
-                'prizren': ['prizren', 'suhareke', 'dragash', 'malisheve', 'mamusha', 'rahovec'],
-                'gjilan': ['gjilan', 'viti', 'kamenice', 'novoberde', 'ranillug'],
-                'peje': ['peje', 'istog', 'kline', 'decan'],
-                'gjakove': ['gjakove', 'rahovec', 'malisheve'],
-                'mitrovice': ['mitrovice', 'vushtrri', 'skenderaj', 'zubin-potok', 'zvecan', 'mitrovice-veri'],
-                'kacanik': ['kacanik', 'ferizaj', 'shtime', 'han-i-elezit'],
-                'vushtrri': ['vushtrri', 'mitrovice', 'skenderaj'],
-                'podujeve': ['podujeve', 'prishtine', 'fushe-kosove'],
-                'lipjan': ['lipjan', 'prishtine', 'ferizaj', 'shtime', 'gllogoc'],
-                'suhareke': ['suhareke', 'prizren', 'rahovec'],
-                'rahovec': ['rahovec', 'gjakove', 'suhareke', 'prizren'],
-                'malisheve': ['malisheve', 'prizren', 'gjakove', 'rahovec'],
-                'skenderaj': ['skenderaj', 'mitrovice', 'vushtrri'],
-                'fushe-kosove': ['fushe-kosove', 'prishtine', 'obiliq', 'lipjan'],
-                'obiliq': ['obiliq', 'prishtine', 'fushe-kosove'],
-                'kline': ['kline', 'peje', 'gjakove', 'istog'],
-                'istog': ['istog', 'peje', 'kline'],
-                'decan': ['decan', 'peje', 'gjakove'],
-                'kamenice': ['kamenice', 'gjilan', 'viti', 'novoberde'],
-                'viti': ['viti', 'gjilan', 'ferizaj', 'kamenice'],
-                'shtime': ['shtime', 'ferizaj', 'lipjan'],
-                'dragash': ['dragash', 'prizren'],
-                'gllogoc': ['gllogoc', 'prishtine', 'drenas', 'lipjan'],
-                'drenas': ['drenas', 'prishtine', 'gllogoc'],
-                'han-i-elezit': ['han-i-elezit', 'ferizaj', 'kacanik', 'shtime'],
-                'mamusha': ['mamusha', 'prizren'],
+                'prishtine': ['prishtine', 'fushe-kosove', 'obiliq', 'gracanice', 'lipjan', 'podujeve', 'drenas'],
+                'fushe-kosove': ['fushe-kosove', 'prishtine', 'obiliq', 'lipjan', 'drenas'],
+                'obiliq': ['obiliq', 'prishtine', 'fushe-kosove', 'vushtrri'],
+                'gracanice': ['gracanice', 'prishtine', 'lipjan', 'fushe-kosove'],
+                'lipjan': ['lipjan', 'prishtine', 'fushe-kosove', 'shtime', 'ferizaj', 'gracanice'],
+                'podujeve': ['podujeve', 'prishtine', 'vushtrri'],
+                'drenas': ['drenas', 'prishtine', 'skenderaj', 'malisheve', 'lipjan', 'fushe-kosove'],
+                'ferizaj': ['ferizaj', 'kacanik', 'shtime', 'han-i-elezit', 'shterpce', 'viti', 'lipjan'],
+                'kacanik': ['kacanik', 'ferizaj', 'han-i-elezit', 'shtime', 'shterpce'],
+                'han-i-elezit': ['han-i-elezit', 'kacanik', 'ferizaj'],
+                'shtime': ['shtime', 'ferizaj', 'lipjan', 'suhareke', 'kacanik'],
+                'shterpce': ['shterpce', 'ferizaj', 'kacanik', 'prizren'],
+                'viti': ['viti', 'gjilan', 'ferizaj', 'kllokot', 'kamenice'],
+                'gjilan': ['gjilan', 'viti', 'kamenice', 'novoberde', 'ranillug', 'partesh', 'kllokot'],
+                'kamenice': ['kamenice', 'gjilan', 'novoberde', 'ranillug'],
                 'novoberde': ['novoberde', 'gjilan', 'kamenice', 'prishtine'],
-                'ranillug': ['ranillug', 'gjilan', 'kamenice'],
-                'mitrovice-veri': ['mitrovice-veri', 'mitrovice', 'zubin-potok', 'zvecan'],
-                'zubin-potok': ['zubin-potok', 'mitrovice-veri', 'zvecan', 'mitrovice'],
-                'zvecan': ['zvecan', 'mitrovice-veri', 'zubin-potok', 'mitrovice']
+                'ranillug': ['ranillug', 'kamenice', 'gjilan'],
+                'partesh': ['partesh', 'gjilan', 'kllokot'],
+                'kllokot': ['kllokot', 'viti', 'gjilan', 'partesh'],
+                'prizren': ['prizren', 'suhareke', 'dragash', 'mamusha', 'rahovec', 'malisheve'],
+                'suhareke': ['suhareke', 'prizren', 'rahovec', 'malisheve', 'shtime'],
+                'dragash': ['dragash', 'prizren'],
+                'mamusha': ['mamusha', 'prizren', 'rahovec', 'suhareke'],
+                'rahovec': ['rahovec', 'gjakove', 'suhareke', 'prizren', 'malisheve'],
+                'malisheve': ['malisheve', 'rahovec', 'suhareke', 'drenas', 'kline'],
+                'gjakove': ['gjakove', 'rahovec', 'decan', 'junik'],
+                'decan': ['decan', 'gjakove', 'peje', 'junik'],
+                'junik': ['junik', 'decan', 'gjakove'],
+                'peje': ['peje', 'istog', 'kline', 'decan'],
+                'istog': ['istog', 'peje', 'kline', 'skenderaj'],
+                'kline': ['kline', 'peje', 'istog', 'malisheve', 'skenderaj'],
+                'mitrovice': ['mitrovice', 'vushtrri', 'skenderaj', 'mitrovice-veri', 'zvecan'],
+                'vushtrri': ['vushtrri', 'mitrovice', 'skenderaj', 'obiliq', 'podujeve'],
+                'skenderaj': ['skenderaj', 'mitrovice', 'vushtrri', 'drenas', 'kline'],
+                'mitrovice-veri': ['mitrovice-veri', 'mitrovice', 'zvecan', 'zubin-potok', 'leposaviq'],
+                'zvecan': ['zvecan', 'mitrovice-veri', 'mitrovice', 'leposaviq', 'zubin-potok'],
+                'zubin-potok': ['zubin-potok', 'zvecan', 'mitrovice-veri', 'mitrovice'],
+                'leposaviq': ['leposaviq', 'zvecan', 'mitrovice-veri']
             };
-            
             return regions[municipality] || [municipality, 'prishtine', 'ferizaj', 'prizren', 'gjilan', 'peje', 'mitrovice'];
         }
 
@@ -4475,8 +3356,9 @@
             const names = {
                 'gjimnaz': 'Gjimnaz Publik',
                 'teknike': 'Shkollë Teknike',
-                'ekonomike': 'Shkollë Ekonomike',
+                'ekonomike': 'Shkollë Ekonomike / Juridike / Turizëm',
                 'mjekesi': 'Shkollë Mjekësie',
+                'bujqesi': 'Shkollë Bujqësore / Veterinare',
                 'art': 'Shkollë e Arteve',
                 'muzik': 'Shkollë e Muzikës',
                 'gjimnaz-privat': 'Gjimnaz Privat',
